@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome against localhost",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}"
+    }
+  ],
+  "css.enabledLanguages": [
+    "html",
+    "javascript",
+    "typescript",
+    "jsx",
+    "tsx",
+    "css",
+    "json"
+  ]
+}
