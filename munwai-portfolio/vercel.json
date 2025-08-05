@@ -1,17 +1,5 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "installCommand": "npm ci",
-  "framework": "vite",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ],
-  "functions": {
-    "src/**/*.js": {
-      "runtime": "nodejs24.x"
-    }
-  }
+  "framework": "vite"
 }
