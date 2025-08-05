@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { Button } from "./ui/button";
+import Swiper from "swiper";
+import { EffectCards } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/effect-cards";
 
 const ProjectCarousel = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-  const [touchStart, setTouchStart] = useState(null);
-  const [touchEnd, setTouchEnd] = useState(null);
+  const [swiperInstance, setSwiperInstance] = useState(null);
 
   const projects = [
     {
@@ -99,188 +100,188 @@ const ProjectCarousel = () => {
       period: "Jun 2024",
       type: "Freelance",
     },
-    {
-      id: 6,
-      title: "Kansai University Winter Exchange Program",
-      description:
-        "Selected for a prestigious RMIT-affiliated global program to explore entrepreneurship and business culture in Osaka, Japan's mercantile capital.",
-      role: "Exchange Student & Innovation Participant",
-      skills: [
-        "Entrepreneurship",
-        "Cross-cultural Communication",
-        "Innovation",
-        "Japanese Language",
-        "International Collaboration",
-      ],
-      outcomes:
-        "Developed and presented innovative solutions to real-world business challenges, completed Japanese language course (Survival Level).",
-      period: "Jan 2023",
-      type: "Exchange",
-    },
-    {
-      id: 7,
-      title: "Sonus Anima Intelligentia (SAI): AI-Driven Music Therapy Tool",
-      description:
-        "Self-directed research, development, and analysis project creating an AI-driven, self-regulated music therapy tool.",
-      role: "Lead Developer & Researcher",
-      skills: [
-        "AI Development",
-        "Music Therapy",
-        "Self-Regulation",
-        "Research",
-        "Innovation",
-      ],
-      outcomes:
-        "Work in progress - developing innovative AI applications for therapeutic interventions.",
-      period: "2025",
-      type: "Personal Project",
-    },
   ];
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+    const swiper = new Swiper(".projectSwiper", {
+      effect: "cards",
+      grabCursor: true,
+      modules: [EffectCards],
+      cardsEffect: {
+        slideShadows: true,
+        rotate: true,
+        perSlideOffset: 8,
+      },
+      on: {
+        slideChange: function () {
+          // Force a reflow to ensure CSS updates properly
+          const slides = this.slides;
+          slides.forEach((slide, index) => {
+            if (index === this.activeIndex) {
+              slide.classList.add("swiper-slide-active");
+            } else {
+              slide.classList.remove("swiper-slide-active");
+            }
+          });
+
+          // Trigger a small delay to ensure CSS transitions work
+          setTimeout(() => {
+            this.update();
+          }, 50);
+        },
+        init: function () {
+          // Ensure proper initial state
+          const slides = this.slides;
+          slides.forEach((slide, index) => {
+            if (index === this.activeIndex) {
+              slide.classList.add("swiper-slide-active");
+            } else {
+              slide.classList.remove("swiper-slide-active");
+            }
+          });
+        },
+      },
+    });
+
+    setSwiperInstance(swiper);
+
+    return () => {
+      if (swiper) {
+        swiper.destroy();
+      }
     };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   const nextProject = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % projects.length);
+    if (swiperInstance) {
+      swiperInstance.slideNext();
+    }
   };
 
   const prevProject = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + projects.length) % projects.length
-    );
-  };
-
-  const minSwipeDistance = 50;
-
-  const onTouchStart = (e) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX);
-
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > minSwipeDistance;
-    const isRightSwipe = distance < -minSwipeDistance;
-
-    if (isLeftSwipe) {
-      nextProject();
-    }
-    if (isRightSwipe) {
-      prevProject();
+    if (swiperInstance) {
+      swiperInstance.slidePrev();
     }
   };
 
   return (
-    <div className="relative">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-3xl font-bold text-slate-800 dark:text-white transition-colors duration-300">
-          Projects & Experience
+    <div className="mb-16">
+      <div className="text-center mb-12">
+        <h2 className="text-4xl font-semibold text-slate-800 dark:text-white mb-6 transition-colors duration-300">
+          Featured Projects
         </h2>
-        {!isMobile && (
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={prevProject}
-              className="border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors duration-300"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={nextProject}
-              className="border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors duration-300"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </Button>
-          </div>
-        )}
+        <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
+          Swipe through my key projects and achievements
+        </p>
       </div>
 
-      <div
-        className="relative overflow-hidden"
-        onTouchStart={isMobile ? onTouchStart : undefined}
-        onTouchMove={isMobile ? onTouchMove : undefined}
-        onTouchEnd={isMobile ? onTouchEnd : undefined}
-      >
-        <div
-          className="flex transition-transform duration-500 ease-in-out"
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-        >
-          {projects.map((project) => (
-            <div key={project.id} className="w-full flex-shrink-0">
-              <div className="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 transition-colors duration-300">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-2 transition-colors duration-300">
+      {/* Swiper Container */}
+      <div className="relative max-w-4xl mx-auto">
+        <div className="swiper projectSwiper">
+          <div className="swiper-wrapper">
+            {projects.map((project) => (
+              <div className="swiper-slide" key={project.id}>
+                <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-8 border border-slate-200 dark:border-slate-700">
+                  <div className="mb-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm rounded-full">
+                        {project.type}
+                      </span>
+                      <span className="text-sm text-slate-500 dark:text-slate-400">
+                        {project.period}
+                      </span>
+                    </div>
+                    <h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-2 transition-colors duration-300">
                       {project.title}
                     </h3>
-                    <p className="text-sm text-blue-600 dark:text-blue-400 mb-1 transition-colors duration-300">
+                    <p className="text-slate-600 dark:text-slate-400 mb-4 transition-colors duration-300">
                       {project.role}
                     </p>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-2 transition-colors duration-300">
-                      {project.period} • {project.type}
+                  </div>
+
+                  <div className="mb-6">
+                    <h4 className="text-lg font-semibold text-slate-800 dark:text-white mb-3 transition-colors duration-300">
+                      Description
+                    </h4>
+                    <p className="text-slate-600 dark:text-slate-300 mb-4 transition-colors duration-300">
+                      {project.description}
                     </p>
                   </div>
-                </div>
 
-                <p className="text-slate-600 dark:text-slate-300 mb-4 transition-colors duration-300">
-                  {project.description}
-                </p>
+                  <div className="mb-6">
+                    <h4 className="text-lg font-semibold text-slate-800 dark:text-white mb-3 transition-colors duration-300">
+                      Key Skills
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {project.skills.map((skill) => (
+                        <span
+                          key={skill}
+                          className="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-sm rounded-full transition-colors duration-300"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
 
-                <div className="mb-4">
-                  <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 transition-colors duration-300">
-                    Skills & Tools:
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {project.skills.map((skill, index) => (
-                      <span
-                        key={index}
-                        className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded-full transition-colors duration-300"
-                      >
-                        {skill}
-                      </span>
-                    ))}
+                  <div className="mb-6">
+                    <h4 className="text-lg font-semibold text-slate-800 dark:text-white mb-3 transition-colors duration-300">
+                      Outcomes
+                    </h4>
+                    <p className="text-slate-600 dark:text-slate-300 transition-colors duration-300">
+                      {project.outcomes}
+                    </p>
+                  </div>
+
+                  <div className="flex justify-center">
+                    <Button className="bg-blue-600 hover:bg-blue-700 text-white transition-colors duration-300">
+                      <ExternalLink className="w-4 h-4 mr-2" />
+                      View Details
+                    </Button>
                   </div>
                 </div>
-
-                <div className="mb-4">
-                  <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 transition-colors duration-300">
-                    Outcomes & Results:
-                  </h4>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 transition-colors duration-300">
-                    {project.outcomes}
-                  </p>
-                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* Progress indicators */}
-      <div className="flex justify-center mt-6 gap-2">
-        {projects.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentIndex(index)}
-            className={`w-3 h-3 rounded-full transition-colors duration-300 ${
-              index === currentIndex
-                ? "bg-blue-600 dark:bg-blue-400"
-                : "bg-slate-300 dark:bg-slate-600"
-            }`}
-          />
-        ))}
+        {/* Navigation Buttons */}
+        <button
+          onClick={prevProject}
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white dark:bg-slate-700 p-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+        <button
+          onClick={nextProject}
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white dark:bg-slate-700 p-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </button>
       </div>
     </div>
   );

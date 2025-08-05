@@ -24,6 +24,9 @@ module.exports = {
           "Noto Color Emoji",
         ],
       },
+      fontWeight: {
+        DEFAULT: "100",
+      },
     },
   },
   plugins: [

@@ -3,6 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "description": "Mun Wai's Portfolio",
+  "keywords": [
+    "swiper",
+    "portfolio",
+    "react"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -43,10 +49,11 @@
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.6.0",
-    "framer-motion": "^12.15.0",
+    "framer-motion": "^12.23.12",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.510.0",
     "next-themes": "^0.4.6",
+    "parcel-bundler": "^1.6.1",
     "react": "^19.1.0",
     "react-day-picker": "8.10.1",
     "react-dom": "^19.1.0",
@@ -55,8 +62,10 @@
     "react-router-dom": "^7.6.1",
     "recharts": "^2.15.3",
     "sonner": "^2.0.3",
+    "swiper": "^11.2.10",
     "tailwind-merge": "^3.3.0",
     "tailwindcss": "^4.1.7",
+    "three": "^0.178.0",
     "vaul": "^1.1.2",
     "zod": "^3.24.4"
   },

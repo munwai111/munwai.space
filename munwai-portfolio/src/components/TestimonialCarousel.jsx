@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
-import { Button } from "./ui/button";
+import React, { useState, useEffect } from "react";
+import { Quote } from "lucide-react";
+import Swiper from "swiper";
+import { EffectCards } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/effect-cards";
 
 const TestimonialCarousel = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-  const [touchStart, setTouchStart] = useState(null);
-  const [touchEnd, setTouchEnd] = useState(null);
+  const [swiperInstance, setSwiperInstance] = useState(null);
 
   // Rearranged testimonials with latest initiatives and references up front
   const testimonials = [
@@ -94,149 +94,157 @@ const TestimonialCarousel = () => {
   ];
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+    const swiper = new Swiper(".testimonialSwiper", {
+      effect: "cards",
+      grabCursor: true,
+      modules: [EffectCards],
+      cardsEffect: {
+        slideShadows: true,
+        rotate: true,
+        perSlideOffset: 8,
+      },
+      on: {
+        slideChange: function () {
+          // Force a reflow to ensure CSS updates properly
+          const slides = this.slides;
+          slides.forEach((slide, index) => {
+            if (index === this.activeIndex) {
+              slide.classList.add("swiper-slide-active");
+            } else {
+              slide.classList.remove("swiper-slide-active");
+            }
+          });
+
+          // Trigger a small delay to ensure CSS transitions work
+          setTimeout(() => {
+            this.update();
+          }, 50);
+        },
+        init: function () {
+          // Ensure proper initial state
+          const slides = this.slides;
+          slides.forEach((slide, index) => {
+            if (index === this.activeIndex) {
+              slide.classList.add("swiper-slide-active");
+            } else {
+              slide.classList.remove("swiper-slide-active");
+            }
+          });
+        },
+      },
+    });
+
+    setSwiperInstance(swiper);
+
+    return () => {
+      if (swiper) {
+        swiper.destroy();
+      }
     };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const nextTestimonial = useCallback(() => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
-  }, [testimonials.length]);
+  const nextTestimonial = () => {
+    if (swiperInstance) {
+      swiperInstance.slideNext();
+    }
+  };
 
   const prevTestimonial = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length
-    );
-  };
-
-  // Touch handlers for mobile swipe
-  const handleTouchStart = (e) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchMove = (e) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
-
-    if (isLeftSwipe) {
-      nextTestimonial();
-    }
-    if (isRightSwipe) {
-      prevTestimonial();
+    if (swiperInstance) {
+      swiperInstance.slidePrev();
     }
   };
-
-  // Auto-advance testimonials
-  useEffect(() => {
-    const interval = setInterval(() => {
-      nextTestimonial();
-    }, 8000); // Change every 8 seconds
-
-    return () => clearInterval(interval);
-  }, [nextTestimonial]);
-
-  const currentTestimonial = testimonials[currentIndex];
 
   return (
-    <section
-      id="testimonials"
-      className="py-16 px-6 bg-white dark:bg-slate-800 transition-colors duration-300"
-    >
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl font-bold text-center text-slate-800 dark:text-white mb-12 transition-colors duration-300">
-          What People Say
+    <div className="mb-16">
+      <div className="text-center mb-12">
+        <h2 className="text-4xl font-semibold text-slate-800 dark:text-white mb-6 transition-colors duration-300">
+          Testimonials
         </h2>
+        <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
+          What colleagues and mentors say about my work
+        </p>
+      </div>
 
-        <div className="relative">
-          <div
-            className="bg-slate-50 dark:bg-slate-700 rounded-lg p-8 shadow-lg transition-colors duration-300"
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-          >
-            <Quote className="w-8 h-8 text-blue-600 dark:text-blue-400 mb-4 transition-colors duration-300" />
+      {/* Swiper Container */}
+      <div className="relative max-w-4xl mx-auto">
+        <div className="swiper testimonialSwiper">
+          <div className="swiper-wrapper">
+            {testimonials.map((testimonial) => (
+              <div className="swiper-slide" key={testimonial.id}>
+                <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-8 border border-slate-200 dark:border-slate-700">
+                  <div className="mb-6">
+                    <Quote className="w-8 h-8 text-blue-600 dark:text-blue-400 mb-4" />
+                    <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed transition-colors duration-300 italic">
+                      "{testimonial.quote}"
+                    </p>
+                  </div>
 
-            <blockquote className="text-lg text-slate-700 dark:text-slate-200 mb-6 leading-relaxed transition-colors duration-300">
-              "{currentTestimonial.quote}"
-            </blockquote>
-
-            <div className="flex items-center justify-between">
-              <div>
-                <cite className="text-slate-800 dark:text-white font-semibold not-italic transition-colors duration-300">
-                  {currentTestimonial.author}
-                </cite>
-                <p className="text-slate-600 dark:text-slate-400 text-sm transition-colors duration-300">
-                  {currentTestimonial.role}
-                </p>
-                <p className="text-blue-600 dark:text-blue-400 text-sm font-medium transition-colors duration-300">
-                  {currentTestimonial.organization}
-                </p>
-                <p className="text-slate-500 dark:text-slate-500 text-xs transition-colors duration-300">
-                  {currentTestimonial.context}
-                </p>
+                  <div className="border-t border-slate-200 dark:border-slate-700 pt-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="text-lg font-semibold text-slate-800 dark:text-white transition-colors duration-300">
+                          {testimonial.author}
+                        </h4>
+                        <p className="text-slate-600 dark:text-slate-400 transition-colors duration-300">
+                          {testimonial.role}
+                        </p>
+                        <p className="text-sm text-slate-500 dark:text-slate-500 transition-colors duration-300">
+                          {testimonial.organization}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm rounded-full">
+                          {testimonial.context}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-
-          {/* Navigation buttons */}
-          <div className="flex justify-between items-center mt-6">
-            <Button
-              onClick={prevTestimonial}
-              variant="outline"
-              size="sm"
-              className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors duration-300"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              {!isMobile && <span className="ml-1">Previous</span>}
-            </Button>
-
-            {/* Dots indicator */}
-            <div className="flex space-x-2">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index)}
-                  className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                    index === currentIndex
-                      ? "bg-blue-600 dark:bg-blue-400"
-                      : "bg-slate-300 dark:bg-slate-600"
-                  }`}
-                  aria-label={`Go to testimonial ${index + 1}`}
-                />
-              ))}
-            </div>
-
-            <Button
-              onClick={nextTestimonial}
-              variant="outline"
-              size="sm"
-              className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors duration-300"
-            >
-              {!isMobile && <span className="mr-1">Next</span>}
-              <ChevronRight className="w-4 h-4" />
-            </Button>
-          </div>
-
-          {/* Progress indicator */}
-          <div className="mt-4 text-center">
-            <span className="text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
-              {currentIndex + 1} of {testimonials.length}
-            </span>
+            ))}
           </div>
         </div>
+
+        {/* Navigation Buttons */}
+        <button
+          onClick={prevTestimonial}
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white dark:bg-slate-700 p-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+        <button
+          onClick={nextTestimonial}
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white dark:bg-slate-700 p-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </button>
       </div>
-    </section>
+    </div>
   );
 };
 

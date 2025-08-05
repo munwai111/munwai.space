@@ -509,7 +509,7 @@ const CertificationSection = () => {
     <section className="py-20 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-4xl font-semibold text-gray-900 dark:text-white mb-4">
             Certifications & Awards
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">

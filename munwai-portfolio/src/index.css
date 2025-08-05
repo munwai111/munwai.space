@@ -1,8 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap");
-
 html,
 body {
   font-family: "Sora", sans-serif;
+  font-weight: 100;
 }
 
 /* If using Tailwind, you may want to update the base font in tailwind.config.js as well. */

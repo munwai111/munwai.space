@@ -5,20 +5,20 @@ const SkillProficiencyChart = () => {
 
   const skills = useMemo(
     () => [
-      { name: "Data Analysis", level: 9.0, color: "from-blue-500 to-blue-600" },
+      { name: "Data Analysis", level: 7.5, color: "from-blue-500 to-blue-600" },
       {
         name: "Digital Marketing",
-        level: 8.5,
+        level: 7.0,
         color: "from-green-500 to-green-600",
       },
       {
         name: "Cross-Cultural Communication",
-        level: 9.0,
+        level: 9.5,
         color: "from-purple-500 to-purple-600",
       },
       {
         name: "Public Speaking",
-        level: 8.0,
+        level: 8.5,
         color: "from-orange-500 to-orange-600",
       },
       {

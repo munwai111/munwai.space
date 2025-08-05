@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Brain, Lightbulb, BarChart3, Target } from "lucide-react";
+import profile2 from "../assets/profile2.png";
 
 const HeroProfile = ({ deviceInfo = {} }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -211,7 +212,7 @@ const HeroProfile = ({ deviceInfo = {} }) => {
           }}
         >
           <img
-            src="/profile-photo.png"
+            src={profile2}
             alt="Looi Mun Wai - Professional Profile"
             className="w-full h-full object-cover rounded-full filter drop-shadow-lg"
             style={{
