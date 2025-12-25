@@ -26,10 +26,10 @@ const HeroProfile = ({ deviceInfo = {} }) => {
         imageSize: "w-42 h-42 sm:w-48 sm:h-48",
         iconSize: "w-6 h-6",
         ringSize: "w-54 h-54 sm:w-60 sm:h-60",
-        outerRingSize: "w-60 h-60 sm:w-66 sm:h-66",
-        ring1Size: "w-50 h-50 sm:w-56 sm:h-56",
+        outerRingSize: "w-60 h-60 sm:w-70 sm:h-70",
+        ring1Size: "w-50 h-50 sm:w-55 sm:h-55",
         ring2Size: "w-44 h-44 sm:w-50 sm:h-50",
-        avatarSize: "w-40 h-40 sm:w-70 sm:h-70",
+        avatarSize: "w-40 h-40 sm:w-50 sm:h-50",
       };
     } else if (deviceInfo.isTablet) {
       return {

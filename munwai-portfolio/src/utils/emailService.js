@@ -15,7 +15,7 @@ export const sendEmail = async (formData) => {
     return {
       success: false,
       message:
-        "Failed to send email. Please contact me directly at l_munwai@yahoo.com or munwai3939728@gmail.com",
+        "Failed to send email. Please contact me directly at L.munwai@yahoo.com",
     };
   }
 };
@@ -23,7 +23,7 @@ export const sendEmail = async (formData) => {
 // Alternative: Copy email content to clipboard
 export const copyEmailContent = (formData) => {
   const emailContent = `
-To: munwai3939728@gmail.com
+To: L.munwai@yahoo.com
 Subject: Portfolio Contact - Message from ${formData.name}
 
 Name: ${formData.name}
@@ -59,6 +59,6 @@ Message:
 ${formData.message}
   `);
 
-  const mailtoUrl = `mailto:munwai3939728@gmail.com?subject=${subject}&body=${body}`;
+  const mailtoUrl = `mailto:L.munwai@yahoo.com?subject=${subject}&body=${body}`;
   window.open(mailtoUrl, "_blank");
 };

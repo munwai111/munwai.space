@@ -14,11 +14,30 @@ export default function SplashPage({ onComplete }) {
   // Refs
   const canvasRef = useRef(null);
   const mouseRef = useRef({ x: 0, y: 0, isInside: false });
+  const textMetricsRef = useRef({ width: 0, height: 0, x: 0, y: 0 }); // Store text position and size
 
   // Animation timing
   const startTime = useRef(Date.now());
   const animationProgress = useRef(0);
   const animationId = useRef(null);
+
+  // Handwriting animation for second text
+  const animateHandwriting2 = useCallback(() => {
+    let progress = 0;
+    const duration = 4000; // 4 seconds for second text
+    const startTime = Date.now();
+
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      progress = Math.min(1, elapsed / duration);
+      setHandwritingProgress2(progress);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+    animate();
+  }, []);
 
   // Handwriting animation for first text
   const animateHandwriting1 = useCallback(() => {
@@ -41,25 +60,7 @@ export default function SplashPage({ onComplete }) {
       }
     };
     animate();
-  }, []);
-
-  // Handwriting animation for second text
-  const animateHandwriting2 = useCallback(() => {
-    let progress = 0;
-    const duration = 4000; // 4 seconds for second text
-    const startTime = Date.now();
-
-    const animate = () => {
-      const elapsed = Date.now() - startTime;
-      progress = Math.min(1, elapsed / duration);
-      setHandwritingProgress2(progress);
-
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      }
-    };
-    animate();
-  }, []);
+  }, [animateHandwriting2]);
 
   // Check for dark mode
   useEffect(() => {
@@ -214,10 +215,149 @@ export default function SplashPage({ onComplete }) {
 
     generateBrainShape();
 
+    // Calculate text metrics for force field
+    const splashText = "MUN WAI SPACE";
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const fontSize = Math.max(40, Math.min(80, canvas.width / 15));
+    ctx.font = `bold ${fontSize}px 'Sora', sans-serif`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    const textMetrics = ctx.measureText(splashText);
+    const textWidth = textMetrics.width;
+    const textHeight = fontSize * 1.2;
+    const textX = centerX;
+    const textY = centerY;
+
+    // Force field parameters - liquid-like boundary
+    const forceFieldPadding = 40;
+    const forceFieldRadius =
+      Math.max(textWidth, textHeight) / 2 + forceFieldPadding;
+    const liquidBoundaryThickness = 30;
+    const maxRepulsionForce = 2.5;
+
+    // Update text metrics ref
+    textMetricsRef.current = {
+      x: textX,
+      y: textY,
+      width: textWidth,
+      height: textHeight,
+    };
+
+    // Helper function to apply force field to particles
+    const applyForceField = (particle) => {
+      const textDx = particle.x - textX;
+      const textDy = particle.y - textY;
+      const textDistance = Math.sqrt(textDx * textDx + textDy * textDy);
+
+      if (textDistance < forceFieldRadius + liquidBoundaryThickness) {
+        const distanceFromBoundary = textDistance - forceFieldRadius;
+        let repulsionForce = 0;
+
+        if (distanceFromBoundary < 0) {
+          // Inside force field - strong repulsion
+          const penetration = Math.abs(distanceFromBoundary);
+          repulsionForce =
+            maxRepulsionForce * (1 + penetration / liquidBoundaryThickness);
+        } else if (distanceFromBoundary < liquidBoundaryThickness) {
+          // In boundary zone - smooth liquid-like repulsion
+          const boundaryProgress =
+            distanceFromBoundary / liquidBoundaryThickness;
+          const smoothCurve = 1 - Math.pow(boundaryProgress, 2);
+          repulsionForce = maxRepulsionForce * smoothCurve * 0.6;
+        }
+
+        if (repulsionForce > 0 && textDistance > 0) {
+          const normalizedTextDx = textDx / textDistance;
+          const normalizedTextDy = textDy / textDistance;
+
+          // Apply liquid damping
+          if (particle.vx !== undefined) {
+            particle.vx *= 0.92;
+            particle.vy *= 0.92;
+            particle.vx += normalizedTextDx * repulsionForce;
+            particle.vy += normalizedTextDy * repulsionForce;
+          }
+
+          // Push particle away if too close
+          if (textDistance < forceFieldRadius) {
+            const pushDistance = forceFieldRadius - textDistance;
+            particle.x += normalizedTextDx * pushDistance;
+            particle.y += normalizedTextDy * pushDistance;
+          }
+        }
+      }
+    };
+
+    // Helper function to draw text with intro/outro animations
+    const drawText = (elapsed) => {
+      let textOpacity = 0;
+      let textScale = 0.8;
+
+      // Intro animation: fade in and scale up (0-1 second)
+      if (elapsed < 1000) {
+        const introProgress = elapsed / 1000;
+        textOpacity = Math.min(1, introProgress * 1.2);
+        textScale = 0.8 + (1 - 0.8) * introProgress;
+      }
+      // Visible during main animation (1s - 5s)
+      else if (elapsed >= 1000 && elapsed < 5000) {
+        textOpacity = 1;
+        textScale = 1;
+      }
+      // Outro animation: fade out and scale down (5s - 6s, or during fade out)
+      else if (elapsed >= 5000 || fadeOut) {
+        const outroStart = 5000;
+        const outroProgress = Math.min(1, (elapsed - outroStart) / 1000);
+        textOpacity = Math.max(0, 1 - outroProgress);
+        textScale = 1 - (1 - 0.8) * outroProgress;
+      }
+
+      if (textOpacity > 0.01) {
+        ctx.save();
+        ctx.translate(textX, textY);
+        ctx.scale(textScale, textScale);
+        ctx.globalAlpha = textOpacity;
+
+        // Set font
+        ctx.font = `bold ${fontSize}px 'Sora', sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        // Draw text with glow effect
+        // Outer glow (shadow)
+        ctx.shadowBlur = 30;
+        ctx.shadowColor = isDarkMode
+          ? "rgba(0, 255, 231, 0.8)"
+          : "rgba(59, 130, 246, 0.8)";
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+        ctx.fillStyle = isDarkMode
+          ? "rgba(0, 255, 231, 0.95)"
+          : "rgba(59, 130, 246, 0.95)";
+        ctx.fillText(splashText, 0, 0);
+
+        // Inner text (solid, no shadow)
+        ctx.shadowBlur = 0;
+        ctx.shadowColor = "transparent";
+        ctx.fillStyle = isDarkMode
+          ? "rgba(0, 255, 231, 1)"
+          : "rgba(59, 130, 246, 1)";
+        ctx.fillText(splashText, 0, 0);
+
+        ctx.restore();
+        ctx.globalAlpha = 1;
+      }
+    };
+
     // Main animation function
     const animateBrainToExplosionToCalm = (progress) => {
       ctx.fillStyle = isDarkMode ? "#000000" : "#f8fafc";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw text first (before other elements)
+      const elapsed = Date.now() - startTime.current;
+      drawText(elapsed);
 
       if (progress < 0.3) {
         // Phase 1: Brain formation (0-30%)
@@ -261,7 +401,9 @@ export default function SplashPage({ onComplete }) {
         const pulseAlpha = 0.3 + 0.7 * Math.sin(point.pulse);
 
         // Draw connections
-        ctx.strokeStyle = `rgba(${isDarkMode ? "0, 255, 231" : "59, 130, 246"}, ${0.3 * progress * pulseAlpha})`;
+        ctx.strokeStyle = `rgba(${
+          isDarkMode ? "0, 255, 231" : "59, 130, 246"
+        }, ${0.3 * progress * pulseAlpha})`;
         ctx.lineWidth = 1;
         point.connections.forEach((connectionIndex) => {
           const connectedPoint = brainPoints[connectionIndex];
@@ -274,13 +416,17 @@ export default function SplashPage({ onComplete }) {
         });
 
         // Draw point
-        ctx.fillStyle = `rgba(${isDarkMode ? "124, 58, 237" : "139, 92, 246"}, ${progress * pulseAlpha})`;
+        ctx.fillStyle = `rgba(${
+          isDarkMode ? "124, 58, 237" : "139, 92, 246"
+        }, ${progress * pulseAlpha})`;
         ctx.beginPath();
         ctx.arc(point.x, point.y, point.size * progress, 0, Math.PI * 2);
         ctx.fill();
 
         // Draw binary character
-        ctx.fillStyle = `rgba(${isDarkMode ? "236, 72, 153" : "239, 68, 68"}, ${progress * pulseAlpha})`;
+        ctx.fillStyle = `rgba(${isDarkMode ? "236, 72, 153" : "239, 68, 68"}, ${
+          progress * pulseAlpha
+        })`;
         ctx.font = `${12 * progress}px monospace`;
         ctx.textAlign = "center";
         ctx.fillText(point.char, point.x, point.y + 4);
@@ -293,7 +439,10 @@ export default function SplashPage({ onComplete }) {
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
 
-        const angle = Math.atan2(point.originalY - centerY, point.originalX - centerX);
+        const angle = Math.atan2(
+          point.originalY - centerY,
+          point.originalX - centerX
+        );
         const distance = 200 * progress;
 
         point.x = point.originalX + Math.cos(angle) * distance;
@@ -301,7 +450,9 @@ export default function SplashPage({ onComplete }) {
 
         // Fade out connections during explosion
         const connectionAlpha = Math.max(0, 1 - progress * 2);
-        ctx.strokeStyle = `rgba(${isDarkMode ? "0, 255, 231" : "59, 130, 246"}, ${connectionAlpha * 0.3})`;
+        ctx.strokeStyle = `rgba(${
+          isDarkMode ? "0, 255, 231" : "59, 130, 246"
+        }, ${connectionAlpha * 0.3})`;
         ctx.lineWidth = 1;
         point.connections.forEach((connectionIndex) => {
           const connectedPoint = brainPoints[connectionIndex];
@@ -318,7 +469,9 @@ export default function SplashPage({ onComplete }) {
         const pulseSize = point.size * (1 + progress * 2);
         const alpha = Math.max(0.1, 1 - progress * 0.8);
 
-        ctx.fillStyle = `rgba(${isDarkMode ? "236, 72, 153" : "239, 68, 68"}, ${alpha})`;
+        ctx.fillStyle = `rgba(${
+          isDarkMode ? "236, 72, 153" : "239, 68, 68"
+        }, ${alpha})`;
         ctx.beginPath();
         ctx.arc(point.x, point.y, pulseSize, 0, Math.PI * 2);
         ctx.fill();
@@ -337,8 +490,11 @@ export default function SplashPage({ onComplete }) {
         }
       });
 
-      // Draw and update particles
+      // Draw and update particles with force field
       particles.forEach((particle, index) => {
+        // Apply liquid-like force field
+        applyForceField(particle);
+
         particle.x += particle.vx;
         particle.y += particle.vy;
         particle.life -= particle.decay;
@@ -348,9 +504,17 @@ export default function SplashPage({ onComplete }) {
           return;
         }
 
-        ctx.fillStyle = `rgba(${isDarkMode ? "0, 255, 231" : "59, 130, 246"}, ${particle.life})`;
+        ctx.fillStyle = `rgba(${isDarkMode ? "0, 255, 231" : "59, 130, 246"}, ${
+          particle.life
+        })`;
         ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size * particle.life, 0, Math.PI * 2);
+        ctx.arc(
+          particle.x,
+          particle.y,
+          particle.size * particle.life,
+          0,
+          Math.PI * 2
+        );
         ctx.fill();
       });
     };
@@ -368,18 +532,24 @@ export default function SplashPage({ onComplete }) {
         // Add gentle mouse interaction
         if (mouseRef.current.isInside) {
           const mouseDistance = Math.sqrt(
-            (mouseRef.current.x - point.x) ** 2 + (mouseRef.current.y - point.y) ** 2
+            (mouseRef.current.x - point.x) ** 2 +
+              (mouseRef.current.y - point.y) ** 2
           );
           if (mouseDistance < 100) {
             const repelForce = (100 - mouseDistance) / 100;
-            const angle = Math.atan2(point.y - mouseRef.current.y, point.x - mouseRef.current.x);
+            const angle = Math.atan2(
+              point.y - mouseRef.current.y,
+              point.x - mouseRef.current.x
+            );
             point.x += Math.cos(angle) * repelForce * 20;
             point.y += Math.sin(angle) * repelForce * 20;
           }
         }
 
         // Draw calm connections
-        ctx.strokeStyle = `rgba(${isDarkMode ? "0, 255, 231" : "59, 130, 246"}, 0.4)`;
+        ctx.strokeStyle = `rgba(${
+          isDarkMode ? "0, 255, 231" : "59, 130, 246"
+        }, 0.4)`;
         ctx.lineWidth = 1;
         point.connections.forEach((connectionIndex) => {
           const connectedPoint = brainPoints[connectionIndex];
@@ -395,7 +565,9 @@ export default function SplashPage({ onComplete }) {
         point.pulse += 0.05;
         const pulseAlpha = 0.6 + 0.4 * Math.sin(point.pulse);
 
-        ctx.fillStyle = `rgba(${isDarkMode ? "124, 58, 237" : "139, 92, 246"}, ${pulseAlpha})`;
+        ctx.fillStyle = `rgba(${
+          isDarkMode ? "124, 58, 237" : "139, 92, 246"
+        }, ${pulseAlpha})`;
         ctx.beginPath();
         ctx.arc(point.x, point.y, point.size, 0, Math.PI * 2);
         ctx.fill();
@@ -420,11 +592,12 @@ export default function SplashPage({ onComplete }) {
         ctx.globalAlpha = 1;
       }
 
-      // Continue particle effects in calm state
+      // Continue particle effects in calm state with force field
       particles.forEach((particle, index) => {
         if (Math.random() < 0.1) {
           // Occasionally spawn new gentle particles
-          const randomPoint = brainPoints[Math.floor(Math.random() * brainPoints.length)];
+          const randomPoint =
+            brainPoints[Math.floor(Math.random() * brainPoints.length)];
           if (randomPoint && particles.length < 20) {
             particles.push({
               x: randomPoint.x,
@@ -438,6 +611,9 @@ export default function SplashPage({ onComplete }) {
           }
         }
 
+        // Apply liquid-like force field
+        applyForceField(particle);
+
         particle.x += particle.vx;
         particle.y += particle.vy;
         particle.life -= particle.decay;
@@ -447,9 +623,17 @@ export default function SplashPage({ onComplete }) {
           return;
         }
 
-        ctx.fillStyle = `rgba(${isDarkMode ? "0, 255, 231" : "59, 130, 246"}, ${particle.life * 0.5})`;
+        ctx.fillStyle = `rgba(${isDarkMode ? "0, 255, 231" : "59, 130, 246"}, ${
+          particle.life * 0.5
+        })`;
         ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size * particle.life, 0, Math.PI * 2);
+        ctx.arc(
+          particle.x,
+          particle.y,
+          particle.size * particle.life,
+          0,
+          Math.PI * 2
+        );
         ctx.fill();
 
         // Add gentle rectangular particles
@@ -457,7 +641,12 @@ export default function SplashPage({ onComplete }) {
           ctx.save();
           ctx.translate(particle.x, particle.y);
           ctx.rotate(particle.angle || 0);
-          ctx.fillRect(-particle.width / 2, -particle.height / 2, particle.width, particle.height);
+          ctx.fillRect(
+            -particle.width / 2,
+            -particle.height / 2,
+            particle.width,
+            particle.height
+          );
           ctx.restore();
         }
       });
@@ -525,7 +714,13 @@ export default function SplashPage({ onComplete }) {
         cancelAnimationFrame(animationId.current);
       }
     };
-  }, [isDarkMode, onComplete, textAnimationPhase, animateHandwriting1]);
+  }, [
+    isDarkMode,
+    onComplete,
+    textAnimationPhase,
+    animateHandwriting1,
+    fadeOut,
+  ]);
 
   return (
     <div
@@ -548,550 +743,163 @@ export default function SplashPage({ onComplete }) {
             duration: textAnimationPhase === 1 ? 1 : 0.5,
           }}
         >
-          {/* Handwriting Animation for "Welcome to Mun Wai Space" */}
-          <div className="relative w-full max-w-4xl mx-auto">
+          {/* SVG handwriting-style stroke paths for three lines:
+              Line 1: "Welcome"  (drawn first with handwritingProgress1)
+              Line 2: "to"       (starts after line 1 via handwritingProgress2)
+              Line 3: "MUN WAI SPACE" (continues handwritingProgress2)
+           */}
+          <div className="relative w-full max-w-5xl mx-auto">
             <svg
               width="100%"
-              height="140"
-              viewBox="0 0 1200 140"
-              className="text-blue-600 dark:text-teal-300 w-full h-auto max-w-2xl md:max-w-4xl"
+              height="240"
+              viewBox="0 0 1200 240"
+              className="text-teal-300 w-full h-auto"
               preserveAspectRatio="xMidYMid meet"
             >
-              {/* W - Welcome */}
-              <path
-                d="M30 40 Q45 90 60 70 Q75 90 90 40"
-                fill="none"
+              {/* Line 1: "Welcome" (larger, semi-bold) */}
+              <g
                 stroke="currentColor"
                 strokeWidth="4"
+                fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeDasharray="180"
-                strokeDashoffset={180 - handwritingProgress1 * 180}
-                className="transition-all duration-100"
-              />
-              {/* e */}
-              <path
-                d="M110 60 Q110 75 125 75 Q140 75 140 60 Q140 45 125 45 Q110 45 110 60 L110 35"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="150"
-                strokeDashoffset={150 - handwritingProgress1 * 150}
-                className="transition-all duration-100"
-              />
-              {/* l */}
-              <path
-                d="M160 95 Q160 85 160 75 L160 35"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="80"
-                strokeDashoffset={80 - handwritingProgress1 * 80}
-                className="transition-all duration-100"
-              />
-              {/* c */}
-              <path
-                d="M190 60 Q190 45 205 45 Q220 45 220 60 Q220 75 205 75 Q190 75 190 60"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="120"
-                strokeDashoffset={120 - handwritingProgress1 * 120}
-                className="transition-all duration-100"
-              />
-              {/* o */}
-              <path
-                d="M240 60 Q240 45 255 45 Q270 45 270 60 Q270 75 255 75 Q240 75 240 60 Z"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="120"
-                strokeDashoffset={120 - handwritingProgress1 * 120}
-                className="transition-all duration-100"
-              />
-              {/* m */}
-              <path
-                d="M290 40 L290 90 Q290 100 300 100 Q310 100 310 90 L310 40 Q310 50 320 50 Q330 50 330 40 L330 90"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="200"
-                strokeDashoffset={200 - handwritingProgress1 * 200}
-                className="transition-all duration-100"
-              />
-              {/* e */}
-              <path
-                d="M350 60 Q350 75 365 75 Q380 75 380 60 Q380 45 365 45 Q350 45 350 60 L350 35"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="150"
-                strokeDashoffset={150 - handwritingProgress1 * 150}
-                className="transition-all duration-100"
-              />
-              {/* space */}
-              <path
-                d="M400 65 L415 65"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeDasharray="30"
-                strokeDashoffset={30 - handwritingProgress1 * 30}
-                className="transition-all duration-100"
-              />
-              {/* t */}
-              <path
-                d="M435 95 L435 35 M420 55 L450 55"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="140"
-                strokeDashoffset={140 - handwritingProgress1 * 140}
-                className="transition-all duration-100"
-              />
-              {/* o */}
-              <path
-                d="M470 60 Q470 45 485 45 Q500 45 500 60 Q500 75 485 75 Q470 75 470 60 Z"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="120"
-                strokeDashoffset={120 - handwritingProgress1 * 120}
-                className="transition-all duration-100"
-              />
-              {/* space */}
-              <path
-                d="M520 65 L535 65"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeDasharray="30"
-                strokeDashoffset={30 - handwritingProgress1 * 30}
-                className="transition-all duration-100"
-              />
-              {/* M - Mun */}
-              <path
-                d="M565 40 L565 90 Q565 100 575 100 Q585 100 585 90 L585 40 Q585 50 595 50 Q605 50 605 40 L605 90"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="200"
-                strokeDashoffset={200 - handwritingProgress1 * 200}
-                className="transition-all duration-100"
-              />
-              {/* u */}
-              <path
-                d="M625 40 L625 90 Q625 100 635 100 Q645 100 645 90 L645 40"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="140"
-                strokeDashoffset={140 - handwritingProgress1 * 140}
-                className="transition-all duration-100"
-              />
-              {/* n */}
-              <path
-                d="M665 40 L665 90 Q665 100 675 100 Q685 100 685 90 L685 40"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="140"
-                strokeDashoffset={140 - handwritingProgress1 * 140}
-                className="transition-all duration-100"
-              />
-              {/* space */}
-              <path
-                d="M705 65 L720 65"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeDasharray="30"
-                strokeDashoffset={30 - handwritingProgress1 * 30}
-                className="transition-all duration-100"
-              />
-              {/* W - Wai */}
-              <path
-                d="M740 40 Q755 90 770 70 Q785 90 800 40"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="180"
-                strokeDashoffset={180 - handwritingProgress1 * 180}
-                className="transition-all duration-100"
-              />
-              {/* a */}
-              <path
-                d="M820 60 Q820 45 835 45 Q850 45 850 60 Q850 75 835 75 Q820 75 820 60 L820 30"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="140"
-                strokeDashoffset={140 - handwritingProgress1 * 140}
-                className="transition-all duration-100"
-              />
-              {/* i */}
-              <path
-                d="M860 60 L860 30 M860 100 L860 95"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="70"
-                strokeDashoffset={70 - handwritingProgress1 * 70}
-                className="transition-all duration-100"
-              />
-              {/* space */}
-              <path
-                d="M885 65 L900 65"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeDasharray="30"
-                strokeDashoffset={30 - handwritingProgress1 * 30}
-                className="transition-all duration-100"
-              />
-              {/* S - Space */}
-              <path
-                d="M920 60 Q920 75 935 75 Q950 75 950 60 Q950 45 935 45 Q920 45 920 60"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="120"
-                strokeDashoffset={120 - handwritingProgress1 * 120}
-                className="transition-all duration-100"
-              />
-              {/* p */}
-              <path
-                d="M970 95 L970 35 Q970 45 980 45 Q990 45 990 60 Q990 75 980 75 Q970 75 970 60"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="140"
-                strokeDashoffset={140 - handwritingProgress1 * 140}
-                className="transition-all duration-100"
-              />
-              {/* a */}
-              <path
-                d="M1010 60 Q1010 45 1025 45 Q1040 45 1040 60 Q1040 75 1025 75 Q1010 75 1010 60 L1010 30"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="140"
-                strokeDashoffset={140 - handwritingProgress1 * 140}
-                className="transition-all duration-100"
-              />
-              {/* c */}
-              <path
-                d="M1060 60 Q1060 45 1075 45 Q1090 45 1090 60 Q1090 75 1075 75 Q1060 75 1060 60"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="120"
-                strokeDashoffset={120 - handwritingProgress1 * 120}
-                className="transition-all duration-100"
-              />
-              {/* e */}
-              <path
-                d="M1110 60 Q1110 75 1125 75 Q1140 75 1140 60 Q1140 45 1125 45 Q1110 45 1110 60 L1110 35"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="150"
-                strokeDashoffset={150 - handwritingProgress1 * 150}
-                className="transition-all duration-100"
-              />
-            </svg>
-          </div>
+              >
+                {/* W */}
+                <path
+                  d="M260 60 L275 110 L290 80 L305 110 L320 60"
+                  strokeDasharray="200"
+                  strokeDashoffset={200 * (1 - handwritingProgress1)}
+                />
+                {/* e */}
+                <path
+                  d="M340 90 Q340 110 360 110 Q380 110 380 90 Q380 70 360 70 Q340 70 340 90 Z"
+                  strokeDasharray="220"
+                  strokeDashoffset={220 * (1 - handwritingProgress1)}
+                />
+                {/* l */}
+                <path
+                  d="M400 55 L400 115"
+                  strokeDasharray="120"
+                  strokeDashoffset={120 * (1 - handwritingProgress1)}
+                />
+                {/* c */}
+                <path
+                  d="M430 90 Q430 70 450 70 Q470 70 470 90 Q470 110 450 110 Q430 110 430 90 Z"
+                  strokeDasharray="220"
+                  strokeDashoffset={220 * (1 - handwritingProgress1)}
+                />
+                {/* o */}
+                <path
+                  d="M490 90 Q490 70 510 70 Q530 70 530 90 Q530 110 510 110 Q490 110 490 90 Z"
+                  strokeDasharray="220"
+                  strokeDashoffset={220 * (1 - handwritingProgress1)}
+                />
+                {/* m */}
+                <path
+                  d="M550 110 L550 80 Q550 70 565 70 Q580 70 580 80 L580 110 M580 80 Q580 70 595 70 Q610 70 610 80 L610 110"
+                  strokeDasharray="260"
+                  strokeDashoffset={260 * (1 - handwritingProgress1)}
+                />
+                {/* e */}
+                <path
+                  d="M630 90 Q630 110 650 110 Q670 110 670 90 Q670 70 650 70 Q630 70 630 90 Z"
+                  strokeDasharray="220"
+                  strokeDashoffset={220 * (1 - handwritingProgress1)}
+                />
+              </g>
 
-          {/* Handwriting Animation for "Professional Portfolio" */}
-          <div className="relative mt-8 w-full max-w-4xl mx-auto">
-            <svg
-              width="100%"
-              height="140"
-              viewBox="0 0 900 140"
-              className="text-blue-600 dark:text-teal-300 w-full h-auto max-w-2xl md:max-w-4xl"
-              preserveAspectRatio="xMidYMid meet"
-            >
-              {/* P - Professional */}
-              <path
-                d="M30 40 L30 90 Q30 100 40 100 Q50 100 50 90 L50 40"
-                fill="none"
+              {/* Line 2 & 3 driven by handwritingProgress2 (starts after line 1 finishes) */}
+              <g
                 stroke="currentColor"
-                strokeWidth="5"
+                strokeWidth="4"
+                fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeDasharray="140"
-                strokeDashoffset={140 - handwritingProgress2 * 140}
-                className="transition-all duration-100"
-              />
-              {/* r */}
-              <path
-                d="M70 60 Q70 75 85 75 Q100 75 100 60 L100 40"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="120"
-                strokeDashoffset={120 - handwritingProgress2 * 120}
-                className="transition-all duration-100"
-              />
-              {/* o */}
-              <path
-                d="M120 60 Q120 45 135 45 Q150 45 150 60 Q150 75 135 75 Q120 75 120 60 Z"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="120"
-                strokeDashoffset={120 - handwritingProgress2 * 120}
-                className="transition-all duration-100"
-              />
-              {/* f */}
-              <path
-                d="M170 95 L170 35 M155 55 L185 55"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="140"
-                strokeDashoffset={140 - handwritingProgress2 * 140}
-                className="transition-all duration-100"
-              />
-              {/* e */}
-              <path
-                d="M195 60 Q195 75 210 75 Q225 75 225 60 Q225 45 210 45 Q195 45 195 60 L195 35"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="150"
-                strokeDashoffset={150 - handwritingProgress2 * 150}
-                className="transition-all duration-100"
-              />
-              {/* s */}
-              <path
-                d="M245 60 Q245 75 260 75 Q275 75 275 60 Q275 45 260 45 Q245 45 245 60"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="120"
-                strokeDashoffset={120 - handwritingProgress2 * 120}
-                className="transition-all duration-100"
-              />
-              {/* s */}
-              <path
-                d="M295 60 Q295 75 310 75 Q325 75 325 60 Q325 45 310 45 Q295 45 295 60"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="120"
-                strokeDashoffset={120 - handwritingProgress2 * 120}
-                className="transition-all duration-100"
-              />
-              {/* i */}
-              <path
-                d="M345 60 L345 30 M345 100 L345 95"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="70"
-                strokeDashoffset={70 - handwritingProgress2 * 70}
-                className="transition-all duration-100"
-              />
-              {/* o */}
-              <path
-                d="M375 60 Q375 45 390 45 Q405 45 405 60 Q405 75 390 75 Q375 75 375 60 Z"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="120"
-                strokeDashoffset={120 - handwritingProgress2 * 120}
-                className="transition-all duration-100"
-              />
-              {/* n */}
-              <path
-                d="M425 40 L425 90 Q425 100 435 100 Q445 100 445 90 L445 40"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="140"
-                strokeDashoffset={140 - handwritingProgress2 * 140}
-                className="transition-all duration-100"
-              />
-              {/* space */}
-              <path
-                d="M465 65 L480 65"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeDasharray="30"
-                strokeDashoffset={30 - handwritingProgress2 * 30}
-                className="transition-all duration-100"
-              />
-              {/* P - Portfolio */}
-              <path
-                d="M490 40 L490 90 Q490 100 500 100 Q510 100 510 90 L510 40"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="140"
-                strokeDashoffset={140 - handwritingProgress2 * 140}
-                className="transition-all duration-100"
-              />
-              {/* o */}
-              <path
-                d="M530 60 Q530 45 545 45 Q560 45 560 60 Q560 75 545 75 Q530 75 530 60 Z"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="120"
-                strokeDashoffset={120 - handwritingProgress2 * 120}
-                className="transition-all duration-100"
-              />
-              {/* r */}
-              <path
-                d="M580 60 Q580 75 595 75 Q610 75 610 60 L610 40"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="120"
-                strokeDashoffset={120 - handwritingProgress2 * 120}
-                className="transition-all duration-100"
-              />
-              {/* t */}
-              <path
-                d="M630 95 L630 35 M615 55 L645 55"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="140"
-                strokeDashoffset={140 - handwritingProgress2 * 140}
-                className="transition-all duration-100"
-              />
-              {/* f */}
-              <path
-                d="M655 95 L655 35 M640 55 L670 55"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="140"
-                strokeDashoffset={140 - handwritingProgress2 * 140}
-                className="transition-all duration-100"
-              />
-              {/* o */}
-              <path
-                d="M680 60 Q680 45 695 45 Q710 45 710 60 Q710 75 695 75 Q680 75 680 60 Z"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="120"
-                strokeDashoffset={120 - handwritingProgress2 * 120}
-                className="transition-all duration-100"
-              />
-              {/* l */}
-              <path
-                d="M730 95 Q730 85 730 75 L730 35"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="80"
-                strokeDashoffset={80 - handwritingProgress2 * 80}
-                className="transition-all duration-100"
-              />
-              {/* i */}
-              <path
-                d="M760 60 L760 30 M760 100 L760 95"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="70"
-                strokeDashoffset={70 - handwritingProgress2 * 70}
-                className="transition-all duration-100"
-              />
-              {/* o */}
-              <path
-                d="M790 60 Q790 45 805 45 Q820 45 820 60 Q820 75 805 75 Q790 75 790 60 Z"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeDasharray="120"
-                strokeDashoffset={120 - handwritingProgress2 * 120}
-                className="transition-all duration-100"
-              />
+              >
+                {/* Line 2: "to" (centered under Welcome) */}
+                {/* t */}
+                <path
+                  d="M560 135 L560 175 M545 145 L575 145"
+                  strokeDasharray="160"
+                  strokeDashoffset={160 * (1 - handwritingProgress2)}
+                />
+                {/* o */}
+                <path
+                  d="M595 155 Q595 135 615 135 Q635 135 635 155 Q635 175 615 175 Q595 175 595 155 Z"
+                  strokeDasharray="200"
+                  strokeDashoffset={200 * (1 - handwritingProgress2)}
+                />
+
+                {/* Line 3: "MUN WAI SPACE" (all caps, bolder, wider tracking) */}
+                {/* M */}
+                <path
+                  d="M260 200 L260 240 L280 210 L300 240 L300 200"
+                  strokeDasharray="260"
+                  strokeDashoffset={260 * (1 - handwritingProgress2)}
+                />
+                {/* U */}
+                <path
+                  d="M320 200 L320 230 Q320 245 340 245 Q360 245 360 230 L360 200"
+                  strokeDasharray="220"
+                  strokeDashoffset={220 * (1 - handwritingProgress2)}
+                />
+                {/* N */}
+                <path
+                  d="M380 245 L380 200 L415 245 L415 200"
+                  strokeDasharray="260"
+                  strokeDashoffset={260 * (1 - handwritingProgress2)}
+                />
+                {/* space */}
+                {/* W */}
+                <path
+                  d="M455 205 L465 245 L475 215 L485 245 L495 205"
+                  strokeDasharray="220"
+                  strokeDashoffset={220 * (1 - handwritingProgress2)}
+                />
+                {/* A */}
+                <path
+                  d="M515 245 L530 205 L545 245 M522 230 L538 230"
+                  strokeDasharray="220"
+                  strokeDashoffset={220 * (1 - handwritingProgress2)}
+                />
+                {/* I */}
+                <path
+                  d="M565 205 L565 245"
+                  strokeDasharray="120"
+                  strokeDashoffset={120 * (1 - handwritingProgress2)}
+                />
+                {/* space */}
+                {/* S */}
+                <path
+                  d="M605 210 Q585 210 585 225 Q585 240 605 240 Q625 240 625 225 Q625 210 605 210"
+                  strokeDasharray="260"
+                  strokeDashoffset={260 * (1 - handwritingProgress2)}
+                />
+                {/* P */}
+                <path
+                  d="M645 245 L645 205 L675 205 Q690 205 690 220 Q690 235 675 235 L645 235"
+                  strokeDasharray="260"
+                  strokeDashoffset={260 * (1 - handwritingProgress2)}
+                />
+                {/* A */}
+                <path
+                  d="M710 245 L725 205 L740 245 M717 230 L733 230"
+                  strokeDasharray="220"
+                  strokeDashoffset={220 * (1 - handwritingProgress2)}
+                />
+                {/* C */}
+                <path
+                  d="M760 225 Q760 205 785 205 Q800 205 805 210 M760 225 Q760 245 785 245 Q800 245 805 240"
+                  strokeDasharray="260"
+                  strokeDashoffset={260 * (1 - handwritingProgress2)}
+                />
+                {/* E */}
+                <path
+                  d="M825 205 L825 245 M825 205 L855 205 M825 225 L850 225 M825 245 L855 245"
+                  strokeDasharray="280"
+                  strokeDashoffset={280 * (1 - handwritingProgress2)}
+                />
+              </g>
             </svg>
           </div>
         </motion.div>

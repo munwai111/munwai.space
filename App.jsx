@@ -220,7 +220,7 @@ function App() {
         setNotification({
           isVisible: true,
           message:
-            "Failed to open email client. Please contact me directly at munwai3939728@gmail.com",
+            "Failed to open email client. Please contact me directly at L.munwai@yahoo.com",
         });
       } finally {
         setIsSubmitting(false);
@@ -248,8 +248,8 @@ function App() {
   // Function to download CV
   const downloadCV = () => {
     const link = document.createElement("a");
-    link.href = "/LooiMunWaiResume-2025.pdf";
-    link.download = "LooiMunWai-Resume-2025.pdf";
+    link.href = "/Looi_Mun_Wai_Resume.pdf";
+    link.download = "Looi_Mun_Wai_Resume.pdf";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -1148,11 +1148,11 @@ function App() {
                   <span
                     className="text-slate-600 dark:text-slate-300 transition-colors duration-300 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400"
                     onClick={() =>
-                      copyToClipboard("l_munwai@yahoo.com", "Email")
+                      copyToClipboard("L.munwai@yahoo.com", "Email")
                     }
                     title="Click to copy email"
                   >
-                    l_munwai@yahoo.com
+                    L.munwai@yahoo.com
                   </span>
                 </div>
                 <div className="flex items-center">
@@ -1160,11 +1160,11 @@ function App() {
                   <span
                     className="text-slate-600 dark:text-slate-300 transition-colors duration-300 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400"
                     onClick={() =>
-                      copyToClipboard("+61466000081", "Phone number")
+                      copyToClipboard("(+61) 466-000-081", "Phone number")
                     }
                     title="Click to copy phone number"
                   >
-                    +61466000081
+                    (+61) 466-000-081
                   </span>
                 </div>
                 <div className="flex items-center">

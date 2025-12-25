@@ -29,18 +29,18 @@ const ResumeSection = ({ downloadCV }) => {
 
   // Use a more landscape card for professional experience
   const cardClass =
-    "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 transition-colors duration-300 w-full h-full flex flex-col justify-between shadow-lg hover:shadow-xl rounded-xl p-8 break-words mx-auto";
+    "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 transition-colors duration-300 w-full h-full flex flex-col shadow-lg hover:shadow-xl rounded-xl p-6 md:p-8 break-words overflow-hidden";
 
   const experienceCards = [
-    // Each card is a JSX element (copy from your previous Professional Experience cards)
-    // Card 1
+    // Card 1: UI/UX Designer, User Behavioural Researcher, and Marketing Communication
     <div className={cardClass} key={0}>
       <CardHeader>
         <CardTitle className="text-lg text-slate-800 dark:text-white transition-colors duration-300">
-          User-Centered UI/UX Design Implementation
+          UI/UX Designer, User Behavioural Researcher, and Marketing
+          Communication
         </CardTitle>
         <CardDescription className="text-slate-600 dark:text-slate-400 transition-colors duration-300">
-          VTAC/Xolvit Industry Challenge – UX Design Track
+          VTAC Headquarter, Melbourne CBD
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -55,30 +55,36 @@ const ResumeSection = ({ downloadCV }) => {
           <Calendar className="w-4 h-4 mr-1" />
           Mar 2025 - Apr 2025
         </div>
-        <p className="text-sm text-slate-600 dark:text-slate-300 mb-3 transition-colors duration-300 font-sora-thin">
-          • Utilised comprehensive design tools (Figma, Adobe XD, Photoshop,
-          Canva) to conceptualise and build user-focused interfaces aimed at
-          enhancing the student application journey
+        <p className="text-sm text-slate-600 dark:text-slate-300 mb-3 transition-colors duration-300 font-sora-thin leading-relaxed">
+          • Developed a multi-tiered MVP solution using Figma to support high
+          school students' academic transition, applying strategic thinking and
+          user-focused design to improve decision-making at scale. Tackling
+          VTAC's SDG challenge in bettering education services.
           <br />
-          • Applied human-centered design principles, incorporating iterative
-          feedback loops and usability metrics to improve user experience and
-          accessibility
-          <br />• Enhanced user experience through data-informed, empathetic
-          front-end development and improved decision-making processes for
-          students
+          • Spearheaded behavioural and market benchmarking for VTAC's Pathway
+          Building and Course Selection UIs (using Figma), comparing competitor
+          tools and user feedback through a behavioural evaluation scale to
+          identify and rank the strengths and gaps of each website's features,
+          functionalities, and redundancies – developing a data-driven,
+          user-centred front-end design.
+          <br />• Effectively communicated project progress and insights to key
+          stakeholders (using Canva), demonstrating leadership, structured
+          thinking, and the ability to influence decision-making in a
+          team-driven environment.
         </p>
-        <div className="flex flex-wrap gap-2 mb-2">
+        <div className="mt-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+          <p className="text-xs font-semibold text-green-800 dark:text-green-300 mb-1">
+            Achievement:
+          </p>
+          <p className="text-xs text-green-700 dark:text-green-400">
+            Highly praised for a consistent display of excellence in work ethic
+            and quality output from the CEO.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2 mb-2 mt-3">
           <Badge className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs">
             <Code className="w-3 h-3 mr-1" />
             Figma
-          </Badge>
-          <Badge className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs">
-            <Code className="w-3 h-3 mr-1" />
-            Adobe XD
-          </Badge>
-          <Badge className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs">
-            <Code className="w-3 h-3 mr-1" />
-            Photoshop
           </Badge>
           <Badge className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs">
             <Code className="w-3 h-3 mr-1" />
@@ -95,14 +101,86 @@ const ResumeSection = ({ downloadCV }) => {
         </div>
       </CardContent>
     </div>,
-    // Card 2
+    // Card 2: Research Assistant and Research & Behavioural Data Scientist
     <div className={cardClass} key={1}>
       <CardHeader>
         <CardTitle className="text-lg text-slate-800 dark:text-white transition-colors duration-300">
-          Global Management Program 2024
+          Research Assistant and Research & Behavioural Data Scientist
         </CardTitle>
         <CardDescription className="text-slate-600 dark:text-slate-400 transition-colors duration-300">
-          UNIQLO Australia Sole Representative
+          Building 91 (RMIT CIAIRI), RMIT University, Melbourne CBD
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex items-center text-slate-500 dark:text-slate-400 text-sm mb-2 transition-colors duration-300">
+          <MapPin className="w-4 h-4 mr-1" />
+          Melbourne CBD
+          <Badge className="ml-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
+            Hybrid
+          </Badge>
+        </div>
+        <div className="flex items-center text-slate-500 dark:text-slate-400 text-sm mb-3 transition-colors duration-300">
+          <Calendar className="w-4 h-4 mr-1" />
+          Jul 2024 - Apr 2025
+        </div>
+        <p className="text-sm text-slate-600 dark:text-slate-300 mb-3 transition-colors duration-300 font-sora-thin leading-relaxed">
+          • Led multidisciplinary research for a systematic literature review
+          (SLR) exploring diverse success factors, demonstrating analytical
+          depth and strong academic research capabilities.
+          <br />
+          • Used Scopus, VosViewer, Google Scholar and Google Workspace for
+          qualitative and quantitative research, bibliometrics visualisation,
+          and data analysis.
+          <br />• Designed and implemented project frameworks and methodology,
+          E2E data science workflow, data bibliometrics visualisation method,
+          systematic data validation, and Office automation systems, cutting
+          admin time while ensuring data accuracy.
+          <br />• Co-developed a UI/UX Design Specification plan with Canva for
+          a web-based AI tool supporting RMIT Grants, blending UX strategy with
+          a user-centric approach to digital innovation.
+          <br />• Strategised conflict intervention and people management,
+          analysing evolving sociodynamic group settings in the RACE team to
+          support effective communication and collaborative resolution between
+          users, researchers, and engineers.
+        </p>
+        <div className="mt-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+          <p className="text-xs font-semibold text-green-800 dark:text-green-300 mb-1">
+            Achievement:
+          </p>
+          <p className="text-xs text-green-700 dark:text-green-400">
+            Helped securing government support and a research grant from the
+            Australian Research Council (ARC).
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2 mb-2 mt-3">
+          <Badge className="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs">
+            <Brain className="w-3 h-3 mr-1" />
+            Research
+          </Badge>
+          <Badge className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs">
+            <Code className="w-3 h-3 mr-1" />
+            Data Science
+          </Badge>
+          <Badge className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs">
+            <Users className="w-3 h-3 mr-1" />
+            Analysis
+          </Badge>
+          <Badge className="bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 text-xs">
+            <Target className="w-3 h-3 mr-1" />
+            UI/UX Design
+          </Badge>
+        </div>
+      </CardContent>
+    </div>,
+    // Card 3: Global Business Analyst and Brand Strategist - UNIQLO GMP2024
+    <div className={cardClass} key={2}>
+      <CardHeader>
+        <CardTitle className="text-lg text-slate-800 dark:text-white transition-colors duration-300">
+          Global Business Analyst and Brand Strategist
+        </CardTitle>
+        <CardDescription className="text-slate-600 dark:text-slate-400 transition-colors duration-300">
+          UNIQLO GMP2024 - Uniqlo Co., Ltd, Ariake Office (Global Headquarter),
+          Tokyo
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -117,18 +195,35 @@ const ResumeSection = ({ downloadCV }) => {
           <Calendar className="w-4 h-4 mr-1" />
           Jul 2024 - Aug 2024
         </div>
-        <p className="text-sm text-slate-600 dark:text-slate-300 mb-3 transition-colors duration-300 font-sora-thin">
-          • Conducted in-depth research and data analysis to support financial
-          forecasting, stakeholder behaviour insights, and innovative business
-          strategy development
+        <p className="text-sm text-slate-600 dark:text-slate-300 mb-3 transition-colors duration-300 font-sora-thin leading-relaxed">
+          • Developed data-accurate financial forecasting for UNIQLO Global and
+          Japan-local business marketing and expansion budget, customers and
+          investors' behavioural insights, and innovative business strategy
+          development in branding communication – with deep research and data
+          analysis using scholarly, financial, government and fashion market
+          databases.
           <br />
-          • Collaborated with global teams to develop comprehensive business
-          strategies and market analysis for international expansion
-          <br />• Demonstrated exceptional leadership abilities and proactive
-          approach to challenges, earning recognition as Australia's sole
-          representative
+          • Projected UNIQLO's rebranding plan with innovative and data-informed
+          solutions (using Canva and MS 365 Suite) to UNIQLO executives, clearly
+          communicated with confidence and deep understanding of the brand's
+          values, customer behaviour and the alignment between clients, media,
+          and the company's philosophy.
+          <br />• Collaborated effectively across time zones and diverse
+          cultural backgrounds, aligning team goals and maintaining proactive
+          engagement to drive effective, globally-minded teamwork.
         </p>
-        <div className="flex flex-wrap gap-2 mb-2">
+        <div className="mt-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+          <p className="text-xs font-semibold text-green-800 dark:text-green-300 mb-1">
+            Achievement:
+          </p>
+          <p className="text-xs text-green-700 dark:text-green-400">
+            Globally selected as the top 0.7% of participants, completed the
+            program with outstanding strategic excellence and executive-level
+            communication, highly praised for my demonstration of strong
+            leadership, collaboration, and team empowerment.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2 mb-2 mt-3">
           <Badge className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs">
             <Target className="w-3 h-3 mr-1" />
             Strategy
@@ -148,55 +243,123 @@ const ResumeSection = ({ downloadCV }) => {
         </div>
       </CardContent>
     </div>,
-    // Card 3
-    <div className={cardClass} key={2}>
+    // Card 4: Customer Journey Researcher
+    <div className={cardClass} key={3}>
       <CardHeader>
         <CardTitle className="text-lg text-slate-800 dark:text-white transition-colors duration-300">
-          RMIT CIAIRI Research Assistant
+          Customer Journey Researcher
         </CardTitle>
         <CardDescription className="text-slate-600 dark:text-slate-400 transition-colors duration-300">
-          Research & Innovation Team
+          Practera Nano-Industrial Program (YakBit.AI Startup)
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex items-center text-slate-500 dark:text-slate-400 text-sm mb-2 transition-colors duration-300">
           <MapPin className="w-4 h-4 mr-1" />
-          Melbourne, Australia
-          <Badge className="ml-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
-            Academic
+          Online/Remote work
+          <Badge className="ml-2 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200">
+            Remote
           </Badge>
         </div>
         <div className="flex items-center text-slate-500 dark:text-slate-400 text-sm mb-3 transition-colors duration-300">
           <Calendar className="w-4 h-4 mr-1" />
-          Jul 2024 - Apr 2025
+          Jun 2024 - Jun 2024
         </div>
-        <p className="text-sm text-slate-600 dark:text-slate-300 mb-3 transition-colors duration-300 font-sora-thin">
-          • Led multidisciplinary research for systematic literature review
-          exploring diverse success factors, demonstrating analytical depth and
-          strong academic research capabilities
+        <p className="text-sm text-slate-600 dark:text-slate-300 mb-3 transition-colors duration-300 font-sora-thin leading-relaxed">
+          • Strategised an actionable business proposal for re-targeting
+          Yakbit.AI's resource allocations and target focus, virtually
+          collaborating with a multidisciplinary team and the co-founder to
+          support the company's growth in AI applications for corporate use.
           <br />
-          • Co-developed UI Design Specification plan for web-based AI tool
-          supporting RMIT Grants, contributed to conflict intervention
-          strategies
-          <br />• Applied advanced research methodologies and data analysis
-          techniques to support academic and industry research initiatives
+          • Conducted customer journey research and analysis, delivering
+          user-focused insights to guide business development and innovation
+          (using Google Scholar, Google Trends and IBM SPSS).
+          <br />• Optimised proposal structure and visual presentation using
+          Canva, ensuring clear, professional communication of complex ideas to
+          executives and co-founders.
         </p>
-        <div className="flex flex-wrap gap-2 mb-2">
+        <div className="mt-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+          <p className="text-xs font-semibold text-green-800 dark:text-green-300 mb-1">
+            Achievement:
+          </p>
+          <p className="text-xs text-green-700 dark:text-green-400">
+            Praised by the startup co-founder for a rigorous, detail-rich
+            project plan now serving as the blueprint for their next milestone.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2 mb-2 mt-3">
           <Badge className="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs">
             <Brain className="w-3 h-3 mr-1" />
             Research
           </Badge>
           <Badge className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs">
             <Code className="w-3 h-3 mr-1" />
-            AI Tools
+            Data Analysis
           </Badge>
           <Badge className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs">
             <Users className="w-3 h-3 mr-1" />
-            Analysis
+            Strategy
+          </Badge>
+        </div>
+      </CardContent>
+    </div>,
+    // Card 5: GenAI Prompt Consultant
+    <div className={cardClass} key={4}>
+      <CardHeader>
+        <CardTitle className="text-lg text-slate-800 dark:text-white transition-colors duration-300">
+          GenAI Prompt Consultant
+        </CardTitle>
+        <CardDescription className="text-slate-600 dark:text-slate-400 transition-colors duration-300">
+          Online/Remote work
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex items-center text-slate-500 dark:text-slate-400 text-sm mb-2 transition-colors duration-300">
+          <MapPin className="w-4 h-4 mr-1" />
+          Online/Remote work
+          <Badge className="ml-2 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200">
+            Remote
+          </Badge>
+        </div>
+        <div className="flex items-center text-slate-500 dark:text-slate-400 text-sm mb-3 transition-colors duration-300">
+          <Calendar className="w-4 h-4 mr-1" />
+          Nov 2024 - Current Date
+        </div>
+        <p className="text-sm text-slate-600 dark:text-slate-300 mb-3 transition-colors duration-300 font-sora-thin leading-relaxed">
+          • Critically prompt engineered to assess open-source AI models'
+          limitations, following an objective assessment framework (THE-ARC;
+          Tone, Helpfulness, Efficiency/Conciseness, Accuracy, Relevance,
+          Clarity) - thoroughly pinpoint, compare, and rank the strength &
+          weakness, and robustness of the models. Providing useful insights for
+          AI self-recalibrations and AI engineers' manual interventions.
+          <br />
+          • Applied psycho-behavioural analysis through UX research and
+          lived-experiences to ensure relatability and reliability to specific
+          users' intentional use cases, AI knowledge, knowledge areas, language
+          literacy, and user behaviours. Building a behaviourally adaptive AI
+          model to 'Humanise' user and AI's interactions for more effective and
+          satisfactory output.
+          <br />• Worked on 40+ projects, excelled in a hybrid work environment,
+          showcasing reliable time management, multitasking, and the ability to
+          balance shifting priorities to meet deadlines and deliver consistent,
+          high-quality outcomes.
+        </p>
+        <div className="flex flex-wrap gap-2 mb-2">
+          <Badge className="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs">
+            <Brain className="w-3 h-3 mr-1" />
+            AI Engineering
+          </Badge>
+          <Badge className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs">
+            <Code className="w-3 h-3 mr-1" />
+            Prompt Engineering
+          </Badge>
+          <Badge className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs">
+            <Users className="w-3 h-3 mr-1" />
+            UX Research
           </Badge>
           <Badge className="bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 text-xs">
             <Target className="w-3 h-3 mr-1" />
-            Academic Writing
+            Behavioural Analysis
           </Badge>
         </div>
       </CardContent>
@@ -204,21 +367,48 @@ const ResumeSection = ({ downloadCV }) => {
   ];
 
   useEffect(() => {
-    const swiper = new Swiper(".experienceSwiper", {
-      effect: "cards",
-      grabCursor: true,
-      modules: [EffectCards],
-      cardsEffect: {
-        slideShadows: true,
-        rotate: true,
-        perSlideOffset: 12,
-      },
-      spaceBetween: 20,
-    });
+    let swiper = null;
+    let timeoutId = null;
 
-    setSwiperInstance(swiper);
+    // Wait for DOM to be ready
+    const initSwiper = () => {
+      const swiperElement = document.querySelector(".experienceSwiper");
+      if (!swiperElement) {
+        timeoutId = setTimeout(initSwiper, 100);
+        return;
+      }
+
+      swiper = new Swiper(".experienceSwiper", {
+        effect: "cards",
+        grabCursor: true,
+        modules: [EffectCards],
+        cardsEffect: {
+          slideShadows: true,
+          rotate: true,
+          perSlideOffset: 12,
+        },
+        spaceBetween: 20,
+        slidesPerView: 1,
+        centeredSlides: true,
+        on: {
+          init: function () {
+            this.update();
+          },
+          slideChange: function () {
+            this.update();
+          },
+        },
+      });
+
+      setSwiperInstance(swiper);
+    };
+
+    initSwiper();
 
     return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
       if (swiper) {
         swiper.destroy();
       }
@@ -261,10 +451,28 @@ const ResumeSection = ({ downloadCV }) => {
 
           {/* Swiper Container */}
           <div className="relative max-w-6xl mx-auto px-4">
-            <div className="swiper experienceSwiper">
+            <div
+              className="swiper experienceSwiper"
+              style={{
+                width: "100%",
+                height: "auto",
+                minHeight: "600px",
+                paddingBottom: "40px",
+              }}
+            >
               <div className="swiper-wrapper">
                 {experienceCards.map((card, index) => (
-                  <div className="swiper-slide" key={index}>
+                  <div
+                    className="swiper-slide"
+                    key={index}
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                      display: "flex",
+                      alignItems: "stretch",
+                      padding: "0",
+                    }}
+                  >
                     {card}
                   </div>
                 ))}
@@ -319,14 +527,14 @@ const ResumeSection = ({ downloadCV }) => {
               Education
             </h3>
           </div>
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="max-w-3xl mx-auto">
             <Card className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 transition-colors duration-300 shadow-lg hover:shadow-xl">
               <CardHeader>
                 <CardTitle className="text-lg text-slate-800 dark:text-white transition-colors duration-300">
                   Bachelor of Applied Science (Psychology)
                 </CardTitle>
                 <CardDescription className="text-slate-600 dark:text-slate-400 transition-colors duration-300">
-                  RMIT University
+                  RMIT University, Melbourne, Australia
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -339,13 +547,11 @@ const ResumeSection = ({ downloadCV }) => {
                   2022 - 2024
                 </div>
                 <p className="text-sm text-slate-600 dark:text-slate-300 mb-3 transition-colors duration-300">
-                  • Major in Psychology with focus on organisational behaviour,
-                  human motivation, and communication
-                  <br />
-                  • Completed research projects in cross-cultural collaboration,
-                  leadership development, and strategic thinking
-                  <br />• Achieved academic excellence with strong foundation in
-                  data analysis and research methodologies
+                  • Graduated with a Distinction and an RMIT School Leaver
+                  Scholar reception.
+                  <br />• Kansai University Winter School (Japan, 2023):
+                  Superior performance in cross-cultural entrepreneurship and
+                  Japanese language.
                 </p>
                 <div className="flex flex-wrap gap-2">
                   <Badge className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs">
@@ -355,48 +561,10 @@ const ResumeSection = ({ downloadCV }) => {
                     Research
                   </Badge>
                   <Badge className="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs">
-                    Data Analysis
+                    Cross-Cultural Studies
                   </Badge>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 transition-colors duration-300 shadow-lg hover:shadow-xl">
-              <CardHeader>
-                <CardTitle className="text-lg text-slate-800 dark:text-white transition-colors duration-300">
-                  Diploma of Business
-                </CardTitle>
-                <CardDescription className="text-slate-600 dark:text-slate-400 transition-colors duration-300">
-                  RMIT University
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center text-slate-500 dark:text-slate-400 text-sm mb-2 transition-colors duration-300">
-                  <MapPin className="w-4 h-4 mr-1" />
-                  Melbourne, Australia
-                </div>
-                <div className="flex items-center text-slate-500 dark:text-slate-400 text-sm mb-3 transition-colors duration-300">
-                  <Calendar className="w-4 h-4 mr-1" />
-                  2021 - 2022
-                </div>
-                <p className="text-sm text-slate-600 dark:text-slate-300 mb-3 transition-colors duration-300">
-                  • Foundation in business principles, marketing, and strategic
-                  management
-                  <br />
-                  • Developed skills in project management, stakeholder
-                  engagement, and business communication
-                  <br />• Applied learning through practical business challenges
-                  and case studies
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <Badge className="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs">
-                    Business
-                  </Badge>
-                  <Badge className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs">
-                    Marketing
-                  </Badge>
-                  <Badge className="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs">
-                    Strategy
+                  <Badge className="bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 text-xs">
+                    Distinction
                   </Badge>
                 </div>
               </CardContent>

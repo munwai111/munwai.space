@@ -20,10 +20,8 @@ import TestimonialCarousel from "./components/TestimonialCarousel.jsx";
 import CertificationSection from "./components/CertificationSection.jsx";
 import HeroProfile from "./components/HeroProfile.jsx";
 import NotificationToast from "./components/NotificationToast.jsx";
-import SkillProficiencyChart from "./components/SkillProficiencyChart.jsx";
 import CertificationProgressChart from "./components/CertificationProgressChart.jsx";
-import ProjectDomainChart from "./components/ProjectDomainChart.jsx";
-import SplashPage from "./components/SplashPage.jsx";
+import InitialAnimation from "./components/InitialAnimation.jsx";
 import { sendEmail } from "./utils/emailService.js";
 import "./App.css";
 
@@ -79,8 +77,20 @@ function App() {
   // Device detection hook
   const deviceInfo = useDeviceDetection();
 
-  // State for splash page
-  const [showSplash, setShowSplash] = useState(true);
+  // State for initial animation - with timeout fallback
+  const [showInitialAnimation, setShowInitialAnimation] = useState(true);
+
+  // Fallback: If animation doesn't complete in 10 seconds, show content anyway
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (showInitialAnimation) {
+        setShowInitialAnimation(false);
+        window.scrollTo(0, 0);
+      }
+    }, 10000); // 10 second fallback
+
+    return () => clearTimeout(timeout);
+  }, [showInitialAnimation]);
 
   // State for notification
   const [notification, setNotification] = useState({
@@ -227,7 +237,7 @@ function App() {
         setNotification({
           isVisible: true,
           message:
-            "Failed to open email client. Please contact me directly at l_munwai@yahoo.com",
+            "Failed to open email client. Please contact me directly at L.munwai@yahoo.com",
         });
       } finally {
         setIsSubmitting(false);
@@ -255,8 +265,8 @@ function App() {
   // Function to download CV
   const downloadCV = () => {
     const link = document.createElement("a");
-    link.href = "/LooiMunWaiResume-2025.pdf";
-    link.download = "LooiMunWai-Resume-2025.pdf";
+    link.href = "/Looi_Mun_Wai_Resume.pdf";
+    link.download = "Looi_Mun_Wai_Resume.pdf";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -313,29 +323,39 @@ function App() {
     setNotification({ isVisible: false, message: "" });
   };
 
-  // Function to handle splash page completion
-  const handleSplashComplete = () => {
-    setShowSplash(false);
-    // Ensure page starts at the top
-    window.scrollTo(0, 0);
+  // Function to handle initial animation completion
+  const handleInitialAnimationComplete = () => {
+    // Use requestAnimationFrame to ensure smooth transition
+    requestAnimationFrame(() => {
+      setShowInitialAnimation(false);
+      // Ensure page starts at the top
+      window.scrollTo(0, 0);
+    });
   };
 
   return (
     <div
       className={`min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 transition-colors duration-300 ${
-        showSplash ? "overflow-hidden" : ""
+        showInitialAnimation ? "overflow-hidden" : ""
       }`}
     >
-      {/* Splash Page */}
-      {showSplash && <SplashPage onComplete={handleSplashComplete} />}
+      {/* Initial Animation */}
+      {showInitialAnimation && (
+        <InitialAnimation onComplete={handleInitialAnimationComplete} />
+      )}
 
-      {/* Main Content - Hidden during splash */}
+      {/* Main Content - Fade in simultaneously with splash page fade out */}
       <div
-        className={`transition-opacity duration-1000 ${
-          showSplash
+        className={`transition-opacity duration-1000 ease-in-out ${
+          showInitialAnimation
             ? "opacity-0 pointer-events-none"
             : "opacity-100 pointer-events-auto"
         }`}
+        style={{
+          willChange: showInitialAnimation ? "opacity" : "auto",
+          backfaceVisibility: "hidden",
+          WebkitBackfaceVisibility: "hidden",
+        }}
       >
         <ThemeToggle />
 
@@ -670,6 +690,13 @@ function App() {
                     ? "w-full max-w-sm mx-auto"
                     : ""
                 }`}
+                style={{
+                  width: "fit-content",
+                  height: "fit-content",
+                  position: "absolute",
+                  top: 0,
+                  left: "650px",
+                }}
               >
                 <HeroProfile deviceInfo={deviceInfo} />
               </div>
@@ -721,7 +748,6 @@ function App() {
         >
           <div className="max-w-7xl mx-auto">
             <ProjectCarousel />
-            <ProjectDomainChart />
           </div>
         </section>
 
@@ -1107,11 +1133,6 @@ function App() {
                 </div>
               </div>
             </div>
-
-            {/* Skill Proficiency Chart */}
-            <div className="mt-16">
-              <SkillProficiencyChart />
-            </div>
           </div>
         </section>
 
@@ -1164,11 +1185,11 @@ function App() {
                     <span
                       className="text-slate-600 dark:text-slate-300 transition-colors duration-300 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400"
                       onClick={() =>
-                        copyToClipboard("l_munwai@yahoo.com", "Email")
+                        copyToClipboard("L.munwai@yahoo.com", "Email")
                       }
                       title="Click to copy email"
                     >
-                      l_munwai@yahoo.com
+                      L.munwai@yahoo.com
                     </span>
                   </div>
                   <div className="flex items-center">
@@ -1176,11 +1197,11 @@ function App() {
                     <span
                       className="text-slate-600 dark:text-slate-300 transition-colors duration-300 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400"
                       onClick={() =>
-                        copyToClipboard("+61466000081", "Phone number")
+                        copyToClipboard("(+61) 466-000-081", "Phone number")
                       }
                       title="Click to copy phone number"
                     >
-                      +61466000081
+                      (+61) 466-000-081
                     </span>
                   </div>
                   <div className="flex items-center">
