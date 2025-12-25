@@ -22,6 +22,13 @@ import HeroProfile from "./components/HeroProfile.jsx";
 import NotificationToast from "./components/NotificationToast.jsx";
 import CertificationProgressChart from "./components/CertificationProgressChart.jsx";
 import InitialAnimation from "./components/InitialAnimation.jsx";
+import {
+  FloatReveal,
+  TypeReveal,
+  StaggerReveal,
+  StaggerItem,
+  SlideReveal,
+} from "./components/ScrollReveal.jsx";
 import { sendEmail } from "./utils/emailService.js";
 import "./App.css";
 
@@ -710,34 +717,42 @@ function App() {
           className="py-24 px-6 bg-white dark:bg-slate-800 transition-colors duration-300"
         >
           <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-semibold text-slate-800 dark:text-white mb-6 transition-colors duration-300">
-                About Me
-              </h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mb-8"></div>
-            </div>
-            <div className="prose prose-xl max-w-none text-slate-600 dark:text-slate-300 transition-colors duration-300 leading-relaxed">
-              <p className="mb-8 text-lg">
-                An early-career professional with a strong foundation in
-                psychology, organisational behaviour, communication, and human
-                motivation. With field-tested experience across leadership,
-                cross-cultural collaboration, mentoring, and strategic thinking,
-                bringing a people-first mindset to everything undertaken.
-              </p>
-              <p className="mb-8 text-lg">
-                Curious, driven, and highly reflective, known for the ability to
-                connect with others, adapt quickly, and leave a lasting
-                impression. Values authenticity, personal growth, and creating
-                meaningful experiences—whether through research, storytelling,
-                or systems-level thinking.
-              </p>
-              <p className="text-lg">
-                Currently at a pivotal stage—seeking a full-time opportunity in
-                Melbourne where meaningful contribution, professional growth,
-                and building toward long-term residency and impact can be
-                achieved.
-              </p>
-            </div>
+            <FloatReveal>
+              <div className="text-center mb-16">
+                <h2 className="text-4xl font-semibold text-slate-800 dark:text-white mb-6 transition-colors duration-300">
+                  <TypeReveal delay={0.2}>About Me</TypeReveal>
+                </h2>
+                <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mb-8"></div>
+              </div>
+            </FloatReveal>
+            <StaggerReveal staggerDelay={0.15} className="prose prose-xl max-w-none text-slate-600 dark:text-slate-300 transition-colors duration-300 leading-relaxed">
+              <StaggerItem>
+                <p className="mb-8 text-lg">
+                  An early-career professional with a strong foundation in
+                  psychology, organisational behaviour, communication, and human
+                  motivation. With field-tested experience across leadership,
+                  cross-cultural collaboration, mentoring, and strategic thinking,
+                  bringing a people-first mindset to everything undertaken.
+                </p>
+              </StaggerItem>
+              <StaggerItem>
+                <p className="mb-8 text-lg">
+                  Curious, driven, and highly reflective, known for the ability to
+                  connect with others, adapt quickly, and leave a lasting
+                  impression. Values authenticity, personal growth, and creating
+                  meaningful experiences—whether through research, storytelling,
+                  or systems-level thinking.
+                </p>
+              </StaggerItem>
+              <StaggerItem>
+                <p className="text-lg">
+                  Currently at a pivotal stage—seeking a full-time opportunity in
+                  Melbourne where meaningful contribution, professional growth,
+                  and building toward long-term residency and impact can be
+                  achieved.
+                </p>
+              </StaggerItem>
+            </StaggerReveal>
           </div>
         </section>
 
@@ -747,7 +762,9 @@ function App() {
           className="py-24 px-6 bg-slate-50 dark:bg-slate-900 transition-colors duration-300"
         >
           <div className="max-w-7xl mx-auto">
-            <ProjectCarousel />
+            <FloatReveal>
+              <ProjectCarousel />
+            </FloatReveal>
           </div>
         </section>
 
@@ -760,294 +777,316 @@ function App() {
           className="py-20 bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 transition-colors duration-300"
         >
           <div className="container mx-auto px-6">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-semibold text-gray-900 dark:text-white mb-4">
-                Technical Skills & Tools
-              </h2>
-              <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                Comprehensive technical expertise across design, development,
-                data analysis, and AI tools
-              </p>
-            </div>
+            <FloatReveal>
+              <div className="text-center mb-16">
+                <h2 className="text-4xl font-semibold text-gray-900 dark:text-white mb-4">
+                  <TypeReveal delay={0.2}>Technical Skills & Tools</TypeReveal>
+                </h2>
+                <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                  Comprehensive technical expertise across design, development,
+                  data analysis, and AI tools
+                </p>
+              </div>
+            </FloatReveal>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+            <StaggerReveal staggerDelay={0.1} className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
               {/* Development & Design */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-3">
-                    <Monitor className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+              <StaggerItem>
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-3">
+                      <Monitor className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      Development & Design
+                    </h3>
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    Development & Design
-                  </h3>
-                </div>
-                <div className="space-y-2">
-                  {[
-                    "React",
-                    "JavaScript",
-                    "HTML/CSS",
-                    "Figma",
-                    "Adobe XD",
-                    "Photoshop",
-                    "Premier Pro",
-                    "After Effects",
-                    "Canva",
-                    "CapCut",
-                  ].map((skill) => (
-                    <span
-                      key={skill}
-                      className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm rounded-full mr-2 mb-2"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Data Analysis */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mr-3">
-                    <BarChart3 className="w-6 h-6 text-green-600 dark:text-green-400" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    Data Analysis
-                  </h3>
-                </div>
-                <div className="space-y-2">
-                  {[
-                    "SPSS",
-                    "R Studio",
-                    "Python",
-                    "Excel",
-                    "VosViewer",
-                    "WEKA",
-                    "Statistical Analysis",
-                    "Data Visualization",
-                  ].map((skill) => (
-                    <span
-                      key={skill}
-                      className="inline-block px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-sm rounded-full mr-2 mb-2"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* AI & Productivity */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mr-3">
-                    <Bot className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    AI & Productivity
-                  </h3>
-                </div>
-                <div className="space-y-2">
-                  {[
-                    "ChatGPT",
-                    "Claude",
-                    "DeepSeek",
-                    "Scispace",
-                    "Notion",
-                    "Microsoft Office Suite",
-                    "Google Workspace",
-                    "PowerPoint",
-                    "Teams",
-                    "Meet",
-                  ].map((skill) => (
-                    <span
-                      key={skill}
-                      className="inline-block px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-sm rounded-full mr-2 mb-2"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Core Competencies */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center mr-3">
-                    <Target className="w-6 h-6 text-orange-600 dark:text-orange-400" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    Core Competencies
-                  </h3>
-                </div>
-                <div className="space-y-2">
-                  {[
-                    "Ideation",
-                    "Collaboration",
-                    "Problem-Solving",
-                    "Strategic Thinking",
-                    "Cross-Cultural Communication",
-                    "Project Management",
-                    "Stakeholder Engagement",
-                    "Change Management",
-                    "Innovation Leadership",
-                    "Quality Assurance",
-                  ].map((skill) => (
-                    <span
-                      key={skill}
-                      className="inline-block px-3 py-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 text-sm rounded-full mr-2 mb-2"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Job Applications Section */}
-            <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 rounded-xl p-8">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
-                Relevant Job Applications
-              </h3>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md">
-                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                    UX/UI Designer
-                  </h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
-                    Design user-centered interfaces and experiences
-                  </p>
-                  <div className="flex flex-wrap gap-1">
+                  <div className="space-y-2">
                     {[
+                      "React",
+                      "JavaScript",
+                      "HTML/CSS",
                       "Figma",
                       "Adobe XD",
                       "Photoshop",
-                      "User Research",
-                      "Prototyping",
+                      "Premier Pro",
+                      "After Effects",
+                      "Canva",
+                      "CapCut",
                     ].map((skill) => (
                       <span
                         key={skill}
-                        className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded"
+                        className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm rounded-full mr-2 mb-2"
                       >
                         {skill}
                       </span>
                     ))}
                   </div>
                 </div>
+              </StaggerItem>
 
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md">
-                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                    Data Analyst
-                  </h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
-                    Analyze data to drive business insights
-                  </p>
-                  <div className="flex flex-wrap gap-1">
+              {/* Data Analysis */}
+              <StaggerItem>
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mr-3">
+                      <BarChart3 className="w-6 h-6 text-green-600 dark:text-green-400" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      Data Analysis
+                    </h3>
+                  </div>
+                  <div className="space-y-2">
                     {[
                       "SPSS",
                       "R Studio",
                       "Python",
                       "Excel",
-                      "Statistical Analysis",
-                    ].map((skill) => (
-                      <span
-                        key={skill}
-                        className="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs rounded"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md">
-                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                    AI Prompt Engineer
-                  </h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
-                    Develop and optimize AI prompts for business applications
-                  </p>
-                  <div className="flex flex-wrap gap-1">
-                    {[
-                      "ChatGPT",
-                      "Claude",
-                      "DeepSeek",
-                      "Prompt Engineering",
-                      "AI Strategy",
-                    ].map((skill) => (
-                      <span
-                        key={skill}
-                        className="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs rounded"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md">
-                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                    Research Analyst
-                  </h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
-                    Conduct research and analyze behavioral data
-                  </p>
-                  <div className="flex flex-wrap gap-1">
-                    {[
-                      "SPSS",
                       "VosViewer",
-                      "Scispace",
-                      "Research Methods",
+                      "WEKA",
+                      "Statistical Analysis",
                       "Data Visualization",
                     ].map((skill) => (
                       <span
                         key={skill}
-                        className="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs rounded"
+                        className="inline-block px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-sm rounded-full mr-2 mb-2"
                       >
                         {skill}
                       </span>
                     ))}
                   </div>
                 </div>
+              </StaggerItem>
 
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md">
-                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                    Project Coordinator
-                  </h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
-                    Manage projects and coordinate cross-functional teams
-                  </p>
-                  <div className="flex flex-wrap gap-1">
+              {/* AI & Productivity */}
+              <StaggerItem>
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mr-3">
+                      <Bot className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      AI & Productivity
+                    </h3>
+                  </div>
+                  <div className="space-y-2">
                     {[
+                      "ChatGPT",
+                      "Claude",
+                      "DeepSeek",
+                      "Scispace",
                       "Notion",
-                      "Microsoft Office",
+                      "Microsoft Office Suite",
+                      "Google Workspace",
+                      "PowerPoint",
                       "Teams",
-                      "Project Management",
-                      "Stakeholder Engagement",
+                      "Meet",
                     ].map((skill) => (
                       <span
                         key={skill}
-                        className="px-2 py-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 text-xs rounded"
+                        className="inline-block px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-sm rounded-full mr-2 mb-2"
                       >
                         {skill}
                       </span>
                     ))}
                   </div>
                 </div>
+              </StaggerItem>
 
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md">
-                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                    Content Creator
-                  </h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
-                    Create engaging multimedia content and presentations
-                  </p>
-                  <div className="flex flex-wrap gap-1">
+              {/* Core Competencies */}
+              <StaggerItem>
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+                  <div className="flex items-center mb-4">
+                    <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center mr-3">
+                      <Target className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      Core Competencies
+                    </h3>
+                  </div>
+                  <div className="space-y-2">
                     {[
-                      "CapCut",
-                      "Canva",
-                      "Premier Pro",
-                      "After Effects",
-                      "Content Strategy",
+                      "Ideation",
+                      "Collaboration",
+                      "Problem-Solving",
+                      "Strategic Thinking",
+                      "Cross-Cultural Communication",
+                      "Project Management",
+                      "Stakeholder Engagement",
+                      "Change Management",
+                      "Innovation Leadership",
+                      "Quality Assurance",
                     ].map((skill) => (
+                      <span
+                        key={skill}
+                        className="inline-block px-3 py-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 text-sm rounded-full mr-2 mb-2"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </StaggerItem>
+            </StaggerReveal>
+
+            {/* Job Applications Section */}
+            <FloatReveal delay={0.2}>
+              <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 rounded-xl p-8">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+                  <TypeReveal delay={0.3}>Relevant Job Applications</TypeReveal>
+                </h3>
+                <StaggerReveal staggerDelay={0.08} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <StaggerItem>
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md h-full">
+                      <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                        UX/UI Designer
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                        Design user-centered interfaces and experiences
+                      </p>
+                      <div className="flex flex-wrap gap-1">
+                        {[
+                          "Figma",
+                          "Adobe XD",
+                          "Photoshop",
+                          "User Research",
+                          "Prototyping",
+                        ].map((skill) => (
+                          <span
+                            key={skill}
+                            className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </StaggerItem>
+
+                  <StaggerItem>
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md h-full">
+                      <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                        Data Analyst
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                        Analyze data to drive business insights
+                      </p>
+                      <div className="flex flex-wrap gap-1">
+                        {[
+                          "SPSS",
+                          "R Studio",
+                          "Python",
+                          "Excel",
+                          "Statistical Analysis",
+                        ].map((skill) => (
+                          <span
+                            key={skill}
+                            className="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs rounded"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </StaggerItem>
+
+                  <StaggerItem>
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md h-full">
+                      <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                        AI Prompt Engineer
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                        Develop and optimize AI prompts for business applications
+                      </p>
+                      <div className="flex flex-wrap gap-1">
+                        {[
+                          "ChatGPT",
+                          "Claude",
+                          "DeepSeek",
+                          "Prompt Engineering",
+                          "AI Strategy",
+                        ].map((skill) => (
+                          <span
+                            key={skill}
+                            className="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs rounded"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </StaggerItem>
+
+                  <StaggerItem>
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md h-full">
+                      <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                        Research Analyst
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                        Conduct research and analyze behavioral data
+                      </p>
+                      <div className="flex flex-wrap gap-1">
+                        {[
+                          "SPSS",
+                          "VosViewer",
+                          "Scispace",
+                          "Research Methods",
+                          "Data Visualization",
+                        ].map((skill) => (
+                          <span
+                            key={skill}
+                            className="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs rounded"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </StaggerItem>
+
+                  <StaggerItem>
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md h-full">
+                      <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                        Project Coordinator
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                        Manage projects and coordinate cross-functional teams
+                      </p>
+                      <div className="flex flex-wrap gap-1">
+                        {[
+                          "Notion",
+                          "Microsoft Office",
+                          "Teams",
+                          "Project Management",
+                          "Stakeholder Engagement",
+                        ].map((skill) => (
+                          <span
+                            key={skill}
+                            className="px-2 py-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 text-xs rounded"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </StaggerItem>
+
+                  <StaggerItem>
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md h-full">
+                      <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                        Content Creator
+                      </h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                        Create engaging multimedia content and presentations
+                      </p>
+                      <div className="flex flex-wrap gap-1">
+                        {[
+                          "CapCut",
+                          "Canva",
+                          "Premier Pro",
+                          "After Effects",
+                          "Content Strategy",
+                        ].map((skill) => (
                       <span
                         key={skill}
                         className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded"
@@ -1057,98 +1096,111 @@ function App() {
                     ))}
                   </div>
                 </div>
+                  </StaggerItem>
+                </StaggerReveal>
               </div>
-            </div>
+            </FloatReveal>
           </div>
         </section>
 
         {/* Skills & Expertise Section */}
         <section className="py-16 px-6 bg-white dark:bg-slate-800 transition-colors duration-300">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center text-slate-800 dark:text-white mb-12 transition-colors duration-300">
-              Skills & Expertise
-            </h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-4 transition-colors duration-300">
-                  Technical Skills
-                </h3>
-                <div className="flex flex-wrap justify-center gap-2">
-                  {[
-                    "UX/UI Design",
-                    "Data Analysis",
-                    "Research Methods",
-                    "AI/GenAI",
-                    "Psychology",
-                  ].map((skill) => (
-                    <span
-                      key={skill}
-                      className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm rounded-full transition-colors duration-300"
-                    >
-                      {skill}
-                    </span>
-                  ))}
+            <FloatReveal>
+              <h2 className="text-3xl font-bold text-center text-slate-800 dark:text-white mb-12 transition-colors duration-300">
+                <TypeReveal delay={0.2}>Skills & Expertise</TypeReveal>
+              </h2>
+            </FloatReveal>
+            <StaggerReveal staggerDelay={0.15} className="grid md:grid-cols-3 gap-8">
+              <StaggerItem>
+                <div className="text-center">
+                  <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-4 transition-colors duration-300">
+                    Technical Skills
+                  </h3>
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {[
+                      "UX/UI Design",
+                      "Data Analysis",
+                      "Research Methods",
+                      "AI/GenAI",
+                      "Psychology",
+                    ].map((skill) => (
+                      <span
+                        key={skill}
+                        className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm rounded-full transition-colors duration-300"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-              <div className="text-center">
-                <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-4 transition-colors duration-300">
-                  Communication
-                </h3>
-                <div className="flex flex-wrap justify-center gap-2">
-                  {[
-                    "Active Listening",
-                    "Multilingual",
-                    "Presentation",
-                    "Writing",
-                    "Cross-cultural",
-                  ].map((skill) => (
-                    <span
-                      key={skill}
-                      className="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-sm rounded-full transition-colors duration-300"
-                    >
-                      {skill}
-                    </span>
-                  ))}
+              <StaggerItem>
+                <div className="text-center">
+                  <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-4 transition-colors duration-300">
+                    Communication
+                  </h3>
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {[
+                      "Active Listening",
+                      "Multilingual",
+                      "Presentation",
+                      "Writing",
+                      "Cross-cultural",
+                    ].map((skill) => (
+                      <span
+                        key={skill}
+                        className="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-sm rounded-full transition-colors duration-300"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-              <div className="text-center">
-                <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-4 transition-colors duration-300">
-                  Leadership
-                </h3>
-                <div className="flex flex-wrap justify-center gap-2">
-                  {[
-                    "Team Leadership",
-                    "Mentoring",
-                    "Problem Solving",
-                    "Critical Thinking",
-                    "Adaptability",
-                  ].map((skill) => (
-                    <span
-                      key={skill}
-                      className="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-sm rounded-full transition-colors duration-300"
-                    >
-                      {skill}
-                    </span>
-                  ))}
+              </StaggerItem>
+              <StaggerItem>
+                <div className="text-center">
+                  <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-4 transition-colors duration-300">
+                    Leadership
+                  </h3>
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {[
+                      "Team Leadership",
+                      "Mentoring",
+                      "Problem Solving",
+                      "Critical Thinking",
+                      "Adaptability",
+                    ].map((skill) => (
+                      <span
+                        key={skill}
+                        className="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-sm rounded-full transition-colors duration-300"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </div>
+              </StaggerItem>
+            </StaggerReveal>
           </div>
         </section>
 
         {/* Learning Journey Section */}
         <section className="py-16 px-6 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-slate-800 dark:text-white mb-4 transition-colors duration-300">
-                Learning Journey
-              </h2>
-              <p className="text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
-                Continuous professional development through certifications and
-                skill building
-              </p>
-            </div>
-            <CertificationProgressChart deviceInfo={deviceInfo} />
+            <FloatReveal>
+              <div className="text-center mb-12">
+                <h2 className="text-3xl font-bold text-slate-800 dark:text-white mb-4 transition-colors duration-300">
+                  <TypeReveal delay={0.2}>Learning Journey</TypeReveal>
+                </h2>
+                <p className="text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
+                  Continuous professional development through certifications and
+                  skill building
+                </p>
+              </div>
+            </FloatReveal>
+            <FloatReveal delay={0.3}>
+              <CertificationProgressChart deviceInfo={deviceInfo} />
+            </FloatReveal>
           </div>
         </section>
 
@@ -1158,12 +1210,16 @@ function App() {
           className="py-16 px-6 bg-slate-50 dark:bg-slate-900 transition-colors duration-300"
         >
           <div className="max-w-6xl mx-auto">
-            <TestimonialCarousel />
+            <FloatReveal>
+              <TestimonialCarousel />
+            </FloatReveal>
           </div>
         </section>
 
         {/* Enhanced Certifications & Awards */}
-        <CertificationSection />
+        <FloatReveal>
+          <CertificationSection />
+        </FloatReveal>
 
         {/* Contact Section */}
         <section
@@ -1171,14 +1227,17 @@ function App() {
           className="py-16 px-6 bg-white dark:bg-slate-800 transition-colors duration-300"
         >
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-semibold text-center text-slate-800 dark:text-white mb-12 transition-colors duration-300">
-              Get In Touch
-            </h2>
+            <FloatReveal>
+              <h2 className="text-3xl font-semibold text-center text-slate-800 dark:text-white mb-12 transition-colors duration-300">
+                <TypeReveal delay={0.2}>Get In Touch</TypeReveal>
+              </h2>
+            </FloatReveal>
             <div className="grid md:grid-cols-2 gap-12">
-              <div>
-                <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-6 transition-colors duration-300">
-                  Contact Information
-                </h3>
+              <SlideReveal direction="left" delay={0.2}>
+                <div>
+                  <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-6 transition-colors duration-300">
+                    Contact Information
+                  </h3>
                 <div className="space-y-4">
                   <div className="flex items-center">
                     <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400 mr-3" />
@@ -1216,12 +1275,14 @@ function App() {
                     </a>
                   </div>
                 </div>
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-6 transition-colors duration-300">
-                  Send a Message
-                </h3>
-                <form onSubmit={handleFormSubmit} className="space-y-4">
+                </div>
+              </SlideReveal>
+              <SlideReveal direction="right" delay={0.3}>
+                <div>
+                  <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-6 transition-colors duration-300">
+                    Send a Message
+                  </h3>
+                  <form onSubmit={handleFormSubmit} className="space-y-4">
                   <div>
                     <input
                       type="text"
@@ -1295,8 +1356,9 @@ function App() {
                   >
                     {isSubmitting ? "Sending..." : "Let's Talk Business"}
                   </Button>
-                </form>
-              </div>
+                  </form>
+                </div>
+              </SlideReveal>
             </div>
           </div>
         </section>
