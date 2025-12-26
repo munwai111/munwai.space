@@ -556,7 +556,7 @@ function App() {
                       : "text-4xl sm:text-5xl lg:text-6xl"
                   }`}
                 >
-                  Looi Mun Wai
+                  <TypeReveal delay={0.5}>Looi Mun Wai</TypeReveal>
                 </h1>
                 <p
                   className={`text-slate-600 dark:text-slate-300 mb-2 transition-colors duration-300 ${
@@ -571,7 +571,7 @@ function App() {
                       : "text-lg sm:text-xl"
                   }`}
                 >
-                  吕文维
+                  <TypeReveal delay={0.8}>吕文维</TypeReveal>
                 </p>
                 <p
                   className={`text-blue-600 dark:text-blue-400 mb-6 transition-colors duration-300 ${
@@ -586,8 +586,10 @@ function App() {
                       : "text-lg sm:text-xl"
                   }`}
                 >
-                  Applied Science (Psychology) Graduate | <br></br>Bridging
-                  People, Data & Impact
+                  <TypeReveal delay={1.0}>
+                    Applied Science (Psychology) Graduate | Bridging People,
+                    Data & Impact
+                  </TypeReveal>
                 </p>
 
                 <blockquote
@@ -603,7 +605,9 @@ function App() {
                       : "text-xl sm:text-2xl"
                   }`}
                 >
-                  "Curiosity-driven. People-focused. Outcome-oriented."
+                  <TypeReveal delay={1.3}>
+                    "Curiosity-driven. People-focused. Outcome-oriented."
+                  </TypeReveal>
                 </blockquote>
 
                 <p
@@ -619,8 +623,10 @@ function App() {
                       : "text-lg"
                   }`}
                 >
-                  I bridge psychology and strategy to empower individuals and
-                  organisations—turning human insight into meaningful impact.
+                  <TypeReveal delay={1.6}>
+                    I bridge psychology and strategy to empower individuals and
+                    organisations—turning human insight into meaningful impact.
+                  </TypeReveal>
                 </p>
 
                 <div
@@ -656,7 +662,7 @@ function App() {
                           : "h-5 w-5"
                       }`}
                     />
-                    Get In Touch
+                    <TypeReveal delay={1.9}>Get In Touch</TypeReveal>
                   </Button>
                   <Button
                     variant="outline"
@@ -682,7 +688,7 @@ function App() {
                           : "h-5 w-5"
                       }`}
                     />
-                    Download CV
+                    <TypeReveal delay={2.1}>Download CV</TypeReveal>
                   </Button>
                 </div>
               </div>
@@ -725,20 +731,24 @@ function App() {
                 <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mb-8"></div>
               </div>
             </FloatReveal>
-            <StaggerReveal staggerDelay={0.15} className="prose prose-xl max-w-none text-slate-600 dark:text-slate-300 transition-colors duration-300 leading-relaxed">
+            <StaggerReveal
+              staggerDelay={0.15}
+              className="prose prose-xl max-w-none text-slate-600 dark:text-slate-300 transition-colors duration-300 leading-relaxed"
+            >
               <StaggerItem>
                 <p className="mb-8 text-lg">
                   An early-career professional with a strong foundation in
                   psychology, organisational behaviour, communication, and human
                   motivation. With field-tested experience across leadership,
-                  cross-cultural collaboration, mentoring, and strategic thinking,
-                  bringing a people-first mindset to everything undertaken.
+                  cross-cultural collaboration, mentoring, and strategic
+                  thinking, bringing a people-first mindset to everything
+                  undertaken.
                 </p>
               </StaggerItem>
               <StaggerItem>
                 <p className="mb-8 text-lg">
-                  Curious, driven, and highly reflective, known for the ability to
-                  connect with others, adapt quickly, and leave a lasting
+                  Curious, driven, and highly reflective, known for the ability
+                  to connect with others, adapt quickly, and leave a lasting
                   impression. Values authenticity, personal growth, and creating
                   meaningful experiences—whether through research, storytelling,
                   or systems-level thinking.
@@ -746,10 +756,10 @@ function App() {
               </StaggerItem>
               <StaggerItem>
                 <p className="text-lg">
-                  Currently at a pivotal stage—seeking a full-time opportunity in
-                  Melbourne where meaningful contribution, professional growth,
-                  and building toward long-term residency and impact can be
-                  achieved.
+                  Currently at a pivotal stage—seeking a full-time opportunity
+                  in Melbourne where meaningful contribution, professional
+                  growth, and building toward long-term residency and impact can
+                  be achieved.
                 </p>
               </StaggerItem>
             </StaggerReveal>
@@ -789,7 +799,10 @@ function App() {
               </div>
             </FloatReveal>
 
-            <StaggerReveal staggerDelay={0.1} className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+            <StaggerReveal
+              staggerDelay={0.1}
+              className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16"
+            >
               {/* Development & Design */}
               <StaggerItem>
                 <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
@@ -798,7 +811,7 @@ function App() {
                       <Monitor className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                     </div>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                      Development & Design
+                      <TypeReveal>Development & Design</TypeReveal>
                     </h3>
                   </div>
                   <div className="space-y-2">
@@ -833,7 +846,7 @@ function App() {
                       <BarChart3 className="w-6 h-6 text-green-600 dark:text-green-400" />
                     </div>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                      Data Analysis
+                      <TypeReveal>Data Analysis</TypeReveal>
                     </h3>
                   </div>
                   <div className="space-y-2">
@@ -866,7 +879,7 @@ function App() {
                       <Bot className="w-6 h-6 text-purple-600 dark:text-purple-400" />
                     </div>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                      AI & Productivity
+                      <TypeReveal>AI & Productivity</TypeReveal>
                     </h3>
                   </div>
                   <div className="space-y-2">
@@ -901,7 +914,7 @@ function App() {
                       <Target className="w-6 h-6 text-orange-600 dark:text-orange-400" />
                     </div>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                      Core Competencies
+                      <TypeReveal>Core Competencies</TypeReveal>
                     </h3>
                   </div>
                   <div className="space-y-2">
@@ -935,14 +948,19 @@ function App() {
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
                   <TypeReveal delay={0.3}>Relevant Job Applications</TypeReveal>
                 </h3>
-                <StaggerReveal staggerDelay={0.08} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <StaggerReveal
+                  staggerDelay={0.08}
+                  className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+                >
                   <StaggerItem>
                     <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md h-full">
                       <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                        UX/UI Designer
+                        <TypeReveal>UX/UI Designer</TypeReveal>
                       </h4>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
-                        Design user-centered interfaces and experiences
+                        <TypeReveal>
+                          Design user-centered interfaces and experiences
+                        </TypeReveal>
                       </p>
                       <div className="flex flex-wrap gap-1">
                         {[
@@ -966,10 +984,12 @@ function App() {
                   <StaggerItem>
                     <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md h-full">
                       <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                        Data Analyst
+                        <TypeReveal>Data Analyst</TypeReveal>
                       </h4>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
-                        Analyze data to drive business insights
+                        <TypeReveal>
+                          Analyze data to drive business insights
+                        </TypeReveal>
                       </p>
                       <div className="flex flex-wrap gap-1">
                         {[
@@ -993,10 +1013,13 @@ function App() {
                   <StaggerItem>
                     <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md h-full">
                       <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                        AI Prompt Engineer
+                        <TypeReveal>AI Prompt Engineer</TypeReveal>
                       </h4>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
-                        Develop and optimize AI prompts for business applications
+                        <TypeReveal>
+                          Develop and optimize AI prompts for business
+                          applications
+                        </TypeReveal>
                       </p>
                       <div className="flex flex-wrap gap-1">
                         {[
@@ -1020,10 +1043,12 @@ function App() {
                   <StaggerItem>
                     <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md h-full">
                       <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                        Research Analyst
+                        <TypeReveal>Research Analyst</TypeReveal>
                       </h4>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
-                        Conduct research and analyze behavioral data
+                        <TypeReveal>
+                          Conduct research and analyze behavioral data
+                        </TypeReveal>
                       </p>
                       <div className="flex flex-wrap gap-1">
                         {[
@@ -1047,10 +1072,12 @@ function App() {
                   <StaggerItem>
                     <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md h-full">
                       <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                        Project Coordinator
+                        <TypeReveal>Project Coordinator</TypeReveal>
                       </h4>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
-                        Manage projects and coordinate cross-functional teams
+                        <TypeReveal>
+                          Manage projects and coordinate cross-functional teams
+                        </TypeReveal>
                       </p>
                       <div className="flex flex-wrap gap-1">
                         {[
@@ -1074,10 +1101,12 @@ function App() {
                   <StaggerItem>
                     <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md h-full">
                       <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                        Content Creator
+                        <TypeReveal>Content Creator</TypeReveal>
                       </h4>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
-                        Create engaging multimedia content and presentations
+                        <TypeReveal>
+                          Create engaging multimedia content and presentations
+                        </TypeReveal>
                       </p>
                       <div className="flex flex-wrap gap-1">
                         {[
@@ -1087,15 +1116,15 @@ function App() {
                           "After Effects",
                           "Content Strategy",
                         ].map((skill) => (
-                      <span
-                        key={skill}
-                        className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                          <span
+                            key={skill}
+                            className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </StaggerItem>
                 </StaggerReveal>
               </div>
@@ -1111,11 +1140,14 @@ function App() {
                 <TypeReveal delay={0.2}>Skills & Expertise</TypeReveal>
               </h2>
             </FloatReveal>
-            <StaggerReveal staggerDelay={0.15} className="grid md:grid-cols-3 gap-8">
+            <StaggerReveal
+              staggerDelay={0.15}
+              className="grid md:grid-cols-3 gap-8"
+            >
               <StaggerItem>
                 <div className="text-center">
                   <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-4 transition-colors duration-300">
-                    Technical Skills
+                    <TypeReveal>Technical Skills</TypeReveal>
                   </h3>
                   <div className="flex flex-wrap justify-center gap-2">
                     {[
@@ -1134,10 +1166,11 @@ function App() {
                     ))}
                   </div>
                 </div>
+              </StaggerItem>
               <StaggerItem>
                 <div className="text-center">
                   <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-4 transition-colors duration-300">
-                    Communication
+                    <TypeReveal>Communication</TypeReveal>
                   </h3>
                   <div className="flex flex-wrap justify-center gap-2">
                     {[
@@ -1160,7 +1193,7 @@ function App() {
               <StaggerItem>
                 <div className="text-center">
                   <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-4 transition-colors duration-300">
-                    Leadership
+                    <TypeReveal>Leadership</TypeReveal>
                   </h3>
                   <div className="flex flex-wrap justify-center gap-2">
                     {[
@@ -1193,8 +1226,10 @@ function App() {
                   <TypeReveal delay={0.2}>Learning Journey</TypeReveal>
                 </h2>
                 <p className="text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
-                  Continuous professional development through certifications and
-                  skill building
+                  <TypeReveal delay={0.4}>
+                    Continuous professional development through certifications
+                    and skill building
+                  </TypeReveal>
                 </p>
               </div>
             </FloatReveal>
@@ -1236,126 +1271,126 @@ function App() {
               <SlideReveal direction="left" delay={0.2}>
                 <div>
                   <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-6 transition-colors duration-300">
-                    Contact Information
+                    <TypeReveal>Contact Information</TypeReveal>
                   </h3>
-                <div className="space-y-4">
-                  <div className="flex items-center">
-                    <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400 mr-3" />
-                    <span
-                      className="text-slate-600 dark:text-slate-300 transition-colors duration-300 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400"
-                      onClick={() =>
-                        copyToClipboard("L.munwai@yahoo.com", "Email")
-                      }
-                      title="Click to copy email"
-                    >
-                      L.munwai@yahoo.com
-                    </span>
+                  <div className="space-y-4">
+                    <div className="flex items-center">
+                      <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400 mr-3" />
+                      <span
+                        className="text-slate-600 dark:text-slate-300 transition-colors duration-300 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400"
+                        onClick={() =>
+                          copyToClipboard("L.munwai@yahoo.com", "Email")
+                        }
+                        title="Click to copy email"
+                      >
+                        L.munwai@yahoo.com
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <Smartphone className="w-5 h-5 text-blue-600 dark:text-blue-400 mr-3" />
+                      <span
+                        className="text-slate-600 dark:text-slate-300 transition-colors duration-300 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400"
+                        onClick={() =>
+                          copyToClipboard("(+61) 466-000-081", "Phone number")
+                        }
+                        title="Click to copy phone number"
+                      >
+                        (+61) 466-000-081
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <Linkedin className="w-5 h-5 text-blue-600 dark:text-blue-400 mr-3" />
+                      <a
+                        href="https://www.linkedin.com/in/mun-wai-looi-086886225"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 dark:text-blue-400 hover:underline transition-colors duration-300"
+                      >
+                        Let's link up
+                      </a>
+                    </div>
                   </div>
-                  <div className="flex items-center">
-                    <Smartphone className="w-5 h-5 text-blue-600 dark:text-blue-400 mr-3" />
-                    <span
-                      className="text-slate-600 dark:text-slate-300 transition-colors duration-300 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400"
-                      onClick={() =>
-                        copyToClipboard("(+61) 466-000-081", "Phone number")
-                      }
-                      title="Click to copy phone number"
-                    >
-                      (+61) 466-000-081
-                    </span>
-                  </div>
-                  <div className="flex items-center">
-                    <Linkedin className="w-5 h-5 text-blue-600 dark:text-blue-400 mr-3" />
-                    <a
-                      href="https://www.linkedin.com/in/mun-wai-looi-086886225"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 dark:text-blue-400 hover:underline transition-colors duration-300"
-                    >
-                      Let's link up
-                    </a>
-                  </div>
-                </div>
                 </div>
               </SlideReveal>
               <SlideReveal direction="right" delay={0.3}>
                 <div>
                   <h3 className="text-xl font-semibold text-slate-800 dark:text-white mb-6 transition-colors duration-300">
-                    Send a Message
+                    <TypeReveal>Send a Message</TypeReveal>
                   </h3>
                   <form onSubmit={handleFormSubmit} className="space-y-4">
-                  <div>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      placeholder="Your Name"
-                      className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300 ${
-                        formErrors.name
-                          ? "border-red-500 dark:border-red-400"
-                          : "border-slate-300 dark:border-slate-600"
-                      }`}
-                    />
-                    {formErrors.name && (
-                      <p className="mt-1 text-sm text-red-500 dark:text-red-400">
-                        {formErrors.name}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      placeholder="Your Email"
-                      className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300 ${
-                        formErrors.email
-                          ? "border-red-500 dark:border-red-400"
-                          : "border-slate-300 dark:border-slate-600"
-                      }`}
-                    />
-                    {formErrors.email && (
-                      <p className="mt-1 text-sm text-red-500 dark:text-red-400">
-                        {formErrors.email}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <textarea
-                      rows="4"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      placeholder="Your Message"
-                      className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300 ${
-                        formErrors.message
-                          ? "border-red-500 dark:border-red-400"
-                          : "border-slate-300 dark:border-slate-600"
-                      }`}
-                    ></textarea>
-                    {formErrors.message && (
-                      <p className="mt-1 text-sm text-red-500 dark:text-red-400">
-                        {formErrors.message}
-                      </p>
-                    )}
-                  </div>
+                    <div>
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        placeholder="Your Name"
+                        className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300 ${
+                          formErrors.name
+                            ? "border-red-500 dark:border-red-400"
+                            : "border-slate-300 dark:border-slate-600"
+                        }`}
+                      />
+                      {formErrors.name && (
+                        <p className="mt-1 text-sm text-red-500 dark:text-red-400">
+                          {formErrors.name}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        placeholder="Your Email"
+                        className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300 ${
+                          formErrors.email
+                            ? "border-red-500 dark:border-red-400"
+                            : "border-slate-300 dark:border-slate-600"
+                        }`}
+                      />
+                      {formErrors.email && (
+                        <p className="mt-1 text-sm text-red-500 dark:text-red-400">
+                          {formErrors.email}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <textarea
+                        rows="4"
+                        name="message"
+                        value={formData.message}
+                        onChange={handleInputChange}
+                        placeholder="Your Message"
+                        className={`w-full px-4 py-2 border rounded-lg bg-white dark:bg-slate-700 text-slate-800 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300 ${
+                          formErrors.message
+                            ? "border-red-500 dark:border-red-400"
+                            : "border-slate-300 dark:border-slate-600"
+                        }`}
+                      ></textarea>
+                      {formErrors.message && (
+                        <p className="mt-1 text-sm text-red-500 dark:text-red-400">
+                          {formErrors.message}
+                        </p>
+                      )}
+                    </div>
 
-                  {/* Google reCAPTCHA - Temporarily disabled */}
-                  {/* <div className="flex justify-center">
+                    {/* Google reCAPTCHA - Temporarily disabled */}
+                    {/* <div className="flex justify-center">
                     <div className="g-recaptcha"></div>
                     {formErrors.recaptcha && (
                       <p className="mt-1 text-sm text-red-500 dark:text-red-400">{formErrors.recaptcha}</p>
                     )}
                   </div> */}
 
-                  <Button
-                    type="submit"
-                    className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white transition-colors duration-300"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? "Sending..." : "Let's Talk Business"}
-                  </Button>
+                    <Button
+                      type="submit"
+                      className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white transition-colors duration-300"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? "Sending..." : "Let's Talk Business"}
+                    </Button>
                   </form>
                 </div>
               </SlideReveal>

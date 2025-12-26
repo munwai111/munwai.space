@@ -1,21 +1,42 @@
-// Email service utility using mailto as primary method
-// This is the most reliable approach that works without external dependencies
+// Email service using EmailJS - Sends directly to Yahoo inbox
+// No backend server required, works directly from frontend
+
+import emailjs from "@emailjs/browser";
+
+// EmailJS Configuration
+const EMAILJS_SERVICE_ID = "service_r142b9a";
+const EMAILJS_TEMPLATE_ID = "template_4uo22lw";
+const EMAILJS_PUBLIC_KEY = "c_udEO-3FlKP3w7sI";
+
+// Initialize EmailJS
+emailjs.init(EMAILJS_PUBLIC_KEY);
 
 export const sendEmail = async (formData) => {
   try {
-    const response = await fetch("http://localhost:3002/api/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
-    const result = await response.json();
-    return result;
+    const templateParams = {
+      from_name: formData.name,
+      reply_to: formData.email,
+      message: formData.message,
+    };
+
+    const response = await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      templateParams
+    );
+
+    console.log("Email sent successfully:", response);
+
+    return {
+      success: true,
+      message: "Message sent successfully! I'll get back to you soon.",
+    };
   } catch (error) {
-    console.error("Email service error:", error);
+    console.error("EmailJS error:", error);
     return {
       success: false,
       message:
-        "Failed to send email. Please contact me directly at L.munwai@yahoo.com",
+        "Failed to send message. Please try again or email me directly at L.munwai@yahoo.com",
     };
   }
 };
@@ -36,7 +57,7 @@ ${formData.message}
 This message was sent from the portfolio contact form.
   `;
 
-  navigator.clipboard
+  return navigator.clipboard
     .writeText(emailContent)
     .then(() => {
       return { success: true, message: "Email content copied to clipboard!" };
